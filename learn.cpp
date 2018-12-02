@@ -23,6 +23,13 @@ void Learn(){
         Serial.print("LN-0;");
   }      
 #endif
+     
+#if LEARN_CORR_MIN      
+      p_min+=LEARN_CORR_MIN;
+#endif
+#if LEARN_CORR_MAX
+      p_max-=LEARN_CORR_MAX;
+#endif      
       calc_rCoef();
       mM_has_changed=1;
       MinMaxSaveEEPROM();
@@ -97,7 +104,3 @@ void calc_rCoef() {
   rCoef=p_max-p_min; rCoef=MCP_MAX/rCoef;
   rCoef=(int)((rCoef*1000)+0.005); rCoef=(rCoef/1000);//round to 3 after 0
 }
-
-
-
-

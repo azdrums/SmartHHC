@@ -11,6 +11,7 @@
 #define LED_PIN 3 //LED connected to this Arduino pin
 #define BTN_PIN 2 //Button conected to this Arduino pin
 
+
 //output normalization settings (in theory may add lag). Comment out to disable.  
 #define AV_M_ITERATIONS 3 //Output will be based on the average of that much previous sensor reads 
 #define MCP_MIN_DIFF 2 //Do not set new pot value if difference from previous measurement is not at least that much. 

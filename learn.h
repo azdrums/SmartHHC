@@ -4,6 +4,8 @@
 //learn time values
 #define LEARN_M_DELAY 10 //Add that much delay (milliseconds) between measurements in Learn mode
 #define LEARN_DURATION 8000 //Total duration of Learn procedure, after which we go back to normal operation mode
+#define LEARN_CORR_MIN 20 //add from measured MIN while learning
+#define LEARN_CORR_MAX 20 //substrack from measured MAX while learning
 
 //Position related settings
 #define P_MIN_DEFAULT 700 //if never ran a Learn procedure, treat that sensor reading as fully closed position
