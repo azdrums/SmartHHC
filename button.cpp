@@ -106,13 +106,14 @@ void btnOnLongPress() {
         LearnStart();
         break;
      case OP_FIXED:
+        opMode=OP_TUNE_FIXED; idxLed+=17;//it's actualy 18-1, because the +1 already added in the (% 6 == 0) section in doLed();
 #if HAVE_SERIAL_DEBUG
           if ( sDebug == SER_DEBUG_EVENTS) {
             Serial.println("FT-1");
+            Serial.println(idxLed);
           }
 #endif
-        opMode=OP_TUNE_FIXED;
-        break;
+     break;
      case OP_TUNE_FIXED:
 #if HAVE_SERIAL_DEBUG
           if ( sDebug == SER_DEBUG_EVENTS) {
@@ -158,4 +159,3 @@ void btnInitial() {
 }
 
 //button ends
-

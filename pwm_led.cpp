@@ -11,12 +11,15 @@ unsigned long tmLed=0;
 
 
 
-//LED blink intervals in all modes (one in a row: Learn, F1, F2, F3) 
-int arrBlink[24]={
-800,800,800,800,800,800
-,100,0,0,0,0,1000
-,100,100,100,0,0,1000
-,100,100,100,100,100,1000
+//LED blink intervals in all modes (one in a row: Learn, F1, F2, F3, LF1, LF2, LF3) Prepared by setting idxLed - set in btn handlers, as well as F mode handler. 
+int arrBlink[42]={
+800,800,800,800,800,800 //LN
+,200,0,0,0,0,800 //F1
+,120,140,240,0,0,800 //F2
+,120,140,140,140,240,800 //F3
+,800,0,0,0,0,200 //TnF1
+,400,100,400,0,0,800 //TnF2
+,400,100,400,100,400,800 //TnF3
 };
 
 
@@ -28,7 +31,7 @@ void Led(byte L) {
 
 
 void doLed() {
- if (opMode==OP_NORMAL || opMode==OP_FIXED) {
+ if (opMode==OP_NORMAL) {
   pwm=(byte) ((mcpreg * pwmCoef) + 0.5);
 #if HAVE_SERIAL_DEBUG
   if (sDebug==SER_DEBUG_LED && opMode==OP_NORMAL) { Serial.print("pwm:"); Serial.println(pwm); }
@@ -37,7 +40,7 @@ void doLed() {
   return;
  } 
 
- if (idxLed % 6 == 0) {
+ if (idxLed % 6 == 0) { //% is the reminder from operation devide. If it devides by 6 with no reminder => start a new sequence here by making iLed=idxLed
      Led(On);
      tmLed=millis();
      iLed=idxLed;
@@ -62,4 +65,3 @@ void calcPWMcoef() {
 #endif  //HAVE_SERIAL_DEBUG
 
 }
-

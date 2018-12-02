@@ -14,7 +14,7 @@
  #define HAVE_SERIAL_DEBUG 0
  #define HOST_UPDATE_MIN_INT 100 //update host on change of pedal position and MCP reg value but not more frequent than that interval
  #define HAVE_BT 1
- #if HAVE_SERIAL_DEBUG 
+ #if HAVE_SERIAL_DEBUG //sDebug var controls this. Control with the 'S D n' command from host.
   #define SER_DEBUG_HOST 1
   #define SER_DEBUG_PLOTTER 5
   #define SER_DEBUG_LED 6

@@ -3,9 +3,9 @@
 
 
 #define MCP_FIXED_TUNE_STEP 1 //change resistance with that much at a time when tuning fixed positions. 
-#define MCP_FIXED1_DEFAULT 10  //Default value to set in the pot when in Fixed1 mode.
-#define MCP_FIXED2_DEFAULT 20  //Default value to set in the pot when in Fixed2 mode.
-#define MCP_FIXED3_DEFAULT 30  //Default value to set in the pot when in Fixed3 mode.
+#define MCP_FIXED1_DEFAULT 2  //Default value to set in the pot when in Fixed1 mode.
+#define MCP_FIXED2_DEFAULT 6  //Default value to set in the pot when in Fixed2 mode.
+#define MCP_FIXED3_DEFAULT 12  //Default value to set in the pot when in Fixed3 mode.
 
 
 void Fixed_OnOff();
