@@ -1,7 +1,11 @@
 #ifndef CONF_H_INCLUDED
 #define CONF_H_INCLUDED
 
-#define ABOUT_STR  "HHC hw1.0 fw0.9-dev"
+#if defined GIT_VERSION
+  #define ABOUT_STR  "HHC hw1.0 fw-"GIT_VERSION"-git"
+#else
+  #define ABOUT_STR  "HHC hw1.0 fw0.9-dev"
+#endif
 
 //pin definitions
 #define MCP_CS 8 // The digital pot MCP41050 CS( chip select) pin is connected to this Arduino pin:

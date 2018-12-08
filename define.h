@@ -1,6 +1,8 @@
 #ifndef DEFINE_H_INCLUDED
 #define DEFINE_H_INCLUDED
 
+
+#include "git-version.h"
 #include "configuration.h"
 #include "pwm_led.h"
 #include "button.h"
