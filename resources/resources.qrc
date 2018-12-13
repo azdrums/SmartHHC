@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/check.png</file>
+        <file>icons/microchip.png</file>
+        <file>icons/cancel.png</file>
+        <file>icons/bluetooth.png</file>
+        <file>icons/connect.png</file>
+        <file>icons/disconnect.png</file>
+        <file>icons/scan.png</file>
+        <file>icons/serial.png</file>
+        <file>icons/open.png</file>
+        <file>icons/save.png</file>
+        <file>icons/save-as.png</file>
+        <file>icons/icon.png</file>
+        <file>icons/restore.png</file>
+        <file>icons/clean.png</file>
+        <file>icons/about.png</file>
+        <file>about.html</file>
+        <file>license.html</file>
+        <file>icons/hi-hat.png</file>
+        <file>icons/app.png</file>
+        <file>icons/app_up.png</file>
+        <file>icons/overflow.png</file>
+        <file>translations/smarthhc_it.ts</file>
+        <file>thanks.html</file>
+        <file>translations/smarthhc_bg.ts</file>
+        <file>translations/smarthhc_it.qm</file>
+        <file>mpl-2-0.css</file>
+        <file>translations/it/about.html</file>
+        <file>translations/it/thanks.html</file>
+        <file>icons/logo.png</file>
+        <file>icons/savechip.png</file>
+    </qresource>
+</RCC>
