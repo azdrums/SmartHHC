@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core serialport bluetooth
+QT += core bluetooth
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG  += c++11 # mobility
@@ -77,14 +77,16 @@ DISTFILES += android/AndroidManifest.xml \
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 linux:!android {
+    QT += serialport
+
     SOURCES += src/serial.cpp
     HEADERS += src/serial.h
 
     icon.path = /usr/share/$${TARGET}/icons/
-#   icon.files = resources/icons/icon.png
+    icon.files = resources/icons/icon.png
 
     translations.path = /usr/share/$${TARGET}/translations
-#   translations.files = resources/translations/*.qm
+    translations.files = resources/translations/*.qm
 
     target.files = $${TARGET}
     target.path = /usr/bin
