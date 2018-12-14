@@ -118,18 +118,6 @@ void bluetooth::scan()
         devDiscoveryAgent->stop();
 
     devDiscoveryAgent->start();
-
-#ifdef Q_OS_ANDROID
-    if (svcDiscoveryAgent->isActive())
-        svcDiscoveryAgent->stop();
-/*
-    Using the quick descovery method by get devices from system cache for the
-    known devices, enable FullDiscovery if needed or remove comment on start().
-*/
-    QBluetoothUuid uuid(QString("00001101-0000-1000-8000-00805F9B34FB"));
-    svcDiscoveryAgent->setUuidFilter(uuid);
-    svcDiscoveryAgent->start(/*QBluetoothServiceDiscoveryAgent::FullDiscovery*/);
-#endif
 }
 void bluetooth::onDeviceDiscovered(const QBluetoothDeviceInfo &deviceInfo)
 {
@@ -152,6 +140,17 @@ void bluetooth::onDeviceDiscovered(const QBluetoothDeviceInfo &deviceInfo)
 }
 void bluetooth::onDeviceScanFinished()
 {
+#ifdef Q_OS_ANDROID
+    if (svcDiscoveryAgent->isActive())
+        svcDiscoveryAgent->stop();
+/*
+    Using the quick descovery method by get devices from system cache for the
+    known devices, enable FullDiscovery if needed or remove comment on start().
+*/
+    QBluetoothUuid uuid(QString("00001101-0000-1000-8000-00805F9B34FB"));
+    svcDiscoveryAgent->setUuidFilter(uuid);
+    svcDiscoveryAgent->start(/*QBluetoothServiceDiscoveryAgent::FullDiscovery*/);
+#endif
     emit sigDeviceScanFinished();
 }
 #ifdef Q_OS_ANDROID
