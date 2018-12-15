@@ -16,7 +16,7 @@
 #include <QColor>
 #include <QIcon>
 
-namespace qaw
+namespace qsw
 {
 namespace color
 {

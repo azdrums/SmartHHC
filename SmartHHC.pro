@@ -23,14 +23,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += src src/ui src/ui/qaw
+INCLUDEPATH += src src/ui src/ui/qsw
 
 SOURCES += src/main.cpp \
-           src/ui/qaw/menustyle.cpp \
-           src/ui/qaw/actionbar.cpp \
-           src/ui/qaw/levelbar.cpp \
-           src/ui/qaw/spinbox.cpp \
-           src/ui/qaw/tablayout.cpp \
+           src/ui/qsw/menustyle.cpp \
+           src/ui/qsw/actionbar.cpp \
+           src/ui/qsw/levelbar.cpp \
+           src/ui/qsw/spinbox.cpp \
+           src/ui/qsw/tablayout.cpp \
            src/bluetooth.cpp \
            src/ui/CurveWidget.cpp \
            src/ui/CurveEditor.cpp \
@@ -41,12 +41,12 @@ SOURCES += src/main.cpp \
            src/ui/PageHome.cpp \
            src/ui/PageTerminal.cpp \
            src/ui/MainWindow.cpp
-HEADERS += src/ui/qaw/menustyle.h \
-           src/ui/qaw/actionbar.h \
-           src/ui/qaw/levelbar.h \
-           src/ui/qaw/spinbox.h \
-           src/ui/qaw/tablayout.h \
-           src/ui/qaw/utils.h \
+HEADERS += src/ui/qsw/menustyle.h \
+           src/ui/qsw/actionbar.h \
+           src/ui/qsw/levelbar.h \
+           src/ui/qsw/spinbox.h \
+           src/ui/qsw/tablayout.h \
+           src/ui/qsw/utils.h \
            src/settings.h \
            src/bluetooth.h \
            src/device.h \

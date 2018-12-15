@@ -245,9 +245,9 @@ void ActionBar::updateStyleSheet()
 
     this->setStyleSheet(styleSheet);
 
-    icoNavigation = qaw::color::changeIconColor(icoNavigation, iconSize, _normalColor);
-    icoOverflow   = qaw::color::changeIconColor(icoOverflow, iconSize, _normalColor);
-    icoAppUp      = qaw::color::changeIconColor(icoAppUp, iconSize, _normalColor);
+    icoNavigation = qsw::color::changeIconColor(icoNavigation, iconSize, _normalColor);
+    icoOverflow   = qsw::color::changeIconColor(icoOverflow, iconSize, _normalColor);
+    icoAppUp      = qsw::color::changeIconColor(icoAppUp, iconSize, _normalColor);
 
     tbnNavigation->setIcon(icoNavigation);
     tbnOverflow->setIcon(icoOverflow);
