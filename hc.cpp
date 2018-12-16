@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "define.h"
 
+void(* resetDo) (void) = 0; //declare reset function @ address 0
+
 #if HAVE_SERIAL
 
 #include "SerialCommand.h"
@@ -273,8 +275,17 @@ void hc_C() {
 void hc_NULL(const char *command) {
   Serial.println("E:CNR");
 }
- 
+
+void hc_reset() {
+  
+Serial.println("resetting... ");
+resetDo();
+Serial.println("after reset \n");   
+}
+
 void hcInit() {
+ sCmd.addCommand("RESET",hc_reset);        // DOes a soft-reset by jumping to address 0
+ sCmd.addCommand("RST",hc_reset);        // DOes a soft-reset by jumping to address 0
  sCmd.addCommand("HELO", hc_about);        // Echos the string argument back
  sCmd.addCommand("HELLO", hc_about);        // Echos the string argument back
  sCmd.addCommand("?", hc_about);        // Echos the string argument back
@@ -286,4 +297,3 @@ void hcInit() {
  hc_about();
 }
 #endif //HAVE_SERIAL
-
