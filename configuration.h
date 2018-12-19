@@ -2,9 +2,9 @@
 #define CONF_H_INCLUDED
 
 #if defined GIT_VERSION
-  #define ABOUT_STR  "SmartHHC hw1.0 fw-"GIT_VERSION"-git READY"
+  #define ABOUT_STR "SmartHHC hw1.0 fw-" GIT_VERSION "-git"
 #else
-  #define ABOUT_STR  "SmartHHC hw1.0 fw0.9-dev READY"
+  #define ABOUT_STR "SmartHHC hw1.0 fw0.9-dev"
 #endif
 
 //pin definitions
