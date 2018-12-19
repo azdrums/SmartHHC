@@ -31,7 +31,7 @@ void setup() {
       AT+PSWD:"0000"
      */
     delay(200);
-    Serial.println("AT+NAME:HHC-01");
+    Serial.println("AT+NAME:SmartHHC-01");
     delay(50);
     Serial.println("AT+UART=38400,0,0");
     delay(50);
@@ -42,6 +42,8 @@ void setup() {
   while (!Serial) {
     delay(1);
    }
+  //tmp
+  Serial.println("AT+NAME:SmartHHC-01"); delay(50);
   hcInit(); //command protocol module init
 #endif//HAVE_SERIAL
   mcpInitial();

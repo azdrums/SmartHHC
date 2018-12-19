@@ -11,10 +11,10 @@ SerialCommand sCmd;     // The SerialCommand object
 
 boolean hostConnected=false;
 long tmHostUpd;
-int HostUpdInt=HOST_UPDATE_MIN_INT;
+int HostUpdInt=0;
 int lastSent_P,lastSent_m,lastSent_M=0;
 byte lastSent_r=0xff,lastSent_f1=0,lastSent_f2=0,lastSent_f3=0;
-boolean MCP_Out_sent=false;
+//boolean MCP_Out_sent=false;
 
 void UpdateHost() {
   boolean c=false;  
@@ -67,12 +67,13 @@ void UpdateHost() {
     c=true;
    }
    
-   if (! MCP_Out_sent) {
+/* not sending mcp anymore on connect  
+     if (! MCP_Out_sent) {
      printArray("R",MCP_out,MCP_MAX+1);
      MCP_Out_sent=true;
      c=true;
    }
-   
+*/   
   if (c) tmHostUpd=millis();
 
 }
@@ -250,6 +251,7 @@ void hc_W() {
 
 void hc_C() {
   char *arg;
+  bool CnPrevState = hostConnected; 
   arg = sCmd.next();    // Get the next argument from the SerialCommand object buffer
   Serial.print("C:");
   HostUpdInt=atoi(arg);
@@ -257,16 +259,18 @@ void hc_C() {
   hostConnected=(HostUpdInt);
   if (hostConnected) {
           Serial.println(HostUpdInt);
+          if ( ! CnPrevState ) {
+            lastSent_P=lastmsr;
+            lastSent_r=mcp;
+            lastSent_m=p_min;
+            lastSent_M=p_max;
+            lastSent_f1=mcpf1;
+            lastSent_f2=mcpf2;
+            lastSent_f3=mcpf3;
+            //MCP_Out_sent=false; 
+          }
   }
   else {
-      lastSent_P=0;
-      lastSent_r=0xff;
-      lastSent_m=0;
-      lastSent_M=0;
-      lastSent_f1=0;
-      lastSent_f2=0;
-      lastSent_f3=0;
-      MCP_Out_sent=false;
       Serial.println("0");
   }
 }
@@ -278,7 +282,8 @@ void hc_NULL(const char *command) {
 
 void hc_reset() {
   
-Serial.println("resetting... ");
+Serial.println("soft reset");
+delay(50);
 resetDo();
 Serial.println("after reset \n");   
 }
