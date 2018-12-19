@@ -1,1 +1,1 @@
-#define GIT_VERSION "60eca8f"
+#define GIT_VERSION "716e231"
