@@ -50,42 +50,44 @@ public:
 
     void addSerialPort(const QString &, const QStringList &);
     void showSerialPortOptions();
-    void toggleSerialPort(bool);
     void resetSerialPortInfos();
     void setSerialPortCurrentIndex(int);
 
     void onSerialPortCurrentIndexChanged(int);
 #endif
-    QString bluetoothAddress() const;
+    void showNotFound();
 
+#ifdef Q_OS_ANDROID
+    QString bluetoothAddress() const;
     void addBluetoothDevice(const QString &, const QString &);
     void showBluetoothDeviceOptions();
-    void showNotFound();
     void setBluetoothDeviceCurrentIndex(int);
     void updateBluetoothDeviceScanProgress(const QString &);
     void bluetoothDeviceScanFinished();
-#ifdef Q_OS_ANDROID
     void updateBluetoothServiceScanProgress(const QString &);
     void bluetoothServiceScanFinished();
-#endif
+
     int bluetoothDeviceCount();
 
     void onBluetoothDeviceCurrentIndexChanged(int);
+#endif
 
 signals:
 #ifndef Q_OS_ANDROID
     void sigSerialPortIndexChanged(int);
     void sigSerialPortIndexChanged(const QString &);
-#endif
+#else
     void sigBluetoothDeviceIndexChanged(int);
     void sigBluetoothDeviceIndexChanged(const QString &);
-
+#endif
     void sigIntervalChanged(int);
     void sigSettingInterval();
+
+    void sigReset();
 
 private:
     Ui::PageConnection *ui;
 
-    int  oldIntervalValue = 0; // Cache old interval value.
+    int oldIntervalValue = 0; // Cache old interval value.
 };
 #endif // UICONNECTION_H

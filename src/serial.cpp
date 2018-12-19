@@ -6,6 +6,9 @@
     License, v. 2.0. If a copy of the MPL was not distributed with this
     file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
+#include <QtGlobal>
+#ifndef Q_OS_ANDROID
+
 #include "serial.h"
 
 #include <QSerialPortInfo>
@@ -14,12 +17,27 @@ namespace hhc {
 
 serial::serial(QObject *parent)
 :
-    device(parent),
-    m_qSerial(new QSerialPort(this))
+device(parent)
 {
-    connect(m_qSerial, &QSerialPort::errorOccurred, this, &serial::onErrorOccurredRedirect);
-    connect(m_qSerial, &QSerialPort::readyRead,     this, &serial::onSocketRead);
-    connect(m_qSerial, &QSerialPort::aboutToClose,  this, &serial::onDisconnected);
+    connect(qIoDevice, &QSerialPort::errorOccurred, this, &serial::onErrorOccurredRedirect);
+    connect(qIoDevice, &QSerialPort::readyRead,     this, &serial::onSocketRead);
+    connect(qIoDevice, &QSerialPort::aboutToClose,  this, &serial::onDisconnected);
+}
+bool serial::open(const QString &portName)
+{
+    qIoDevice->setPortName(portName);
+    qIoDevice->setBaudRate(38400);
+    qIoDevice->setDataBits(QSerialPort::Data8);
+    qIoDevice->setParity(QSerialPort::NoParity);
+    qIoDevice->setStopBits(QSerialPort::OneStop);
+    qIoDevice->setFlowControl(QSerialPort::NoFlowControl);
+
+    if (qIoDevice->open(QIODevice::ReadWrite))
+    {
+        onConnected();
+        return true;
+    }
+    return false;
 }
 void serial::scan()
 {
@@ -50,80 +68,10 @@ void serial::scan()
         portInfos.push_back(list);
     }
 }
-bool serial::open(const QString &portName)
-{
-    m_qSerial->setPortName(portName);
-    m_qSerial->setBaudRate(38400);
-    m_qSerial->setDataBits(QSerialPort::Data8);
-    m_qSerial->setParity(QSerialPort::NoParity);
-    m_qSerial->setStopBits(QSerialPort::OneStop);
-    m_qSerial->setFlowControl(QSerialPort::NoFlowControl);
-
-    if (m_qSerial->open(QIODevice::ReadWrite))
-    {
-        onConnected();
-        return true;
-    }
-    return false;
-}
-void serial::close()
-{
-    if (m_qSerial->isOpen())
-    {
-        m_qSerial->close();
-        m_fixed1    =
-        m_fixed2    =
-        m_fixed3    =
-        m_lastIndex =
-        m_min_pos   =
-        m_max_pos   =
-        m_position  =
-        m_interval  = 0;
-        m_curve     = QStringList();
-    }
-    onDisconnected();
-}
-QString serial::errorString() const
-{
-    return m_qSerial->errorString();
-}
-void serial::write(const QByteArray &data)
-{
-    m_qSerial->write(data);
-}
-QByteArray serial::readAll()
-{
-    const QByteArray data = m_qSerial->readAll();
-    processIncomingData(data);
-    return data;
-}
-void serial::sendCommand(const QString &cmd)
-{
-    QByteArray data = cmd.toUtf8() + "\r\n";
-    m_qSerial->write(data);
-}
 void serial::onErrorOccurredRedirect(QSerialPort::SerialPortError error)
 {
-/*
-    TODO: Check if needed or remove
-    if (!m_qSerial->isOpen())
-        onDisconnected();
-*/
     emit sigError(error);
 }
-void serial::onSocketRead()
-{
-    if (!m_qSerial->isReadable())
-        return;
-
-    while (m_qSerial->canReadLine())
-    {
-        QByteArray line = m_qSerial->readLine();
-        QString strLine = QString::fromUtf8(line.constData(), line.length());
-
-        parse(strLine);
-//      qDebug() << strLine;
-        emit sigReadLine(strLine);
-    }
-}
 } // namespace hhc
+
+#endif // ndef Q_OS_ANDROID

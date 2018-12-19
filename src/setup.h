@@ -5,6 +5,6 @@
 
 namespace hhc
 {
-    const QString NamePrefix = "HHC";
+    const QString NamePrefix = "SmartHHC";
 }
 #endif // SETUP_H

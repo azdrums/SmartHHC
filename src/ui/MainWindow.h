@@ -13,9 +13,13 @@
 #include <QSharedPointer>
 
 namespace hhc {
+
 class device;
-class bluetooth;
-class serial;
+#ifdef Q_OS_ANDROID
+    class bluetooth;
+#else
+    class serial;
+#endif
 class settings;
 }
 class QStackedWidget;
@@ -66,8 +70,8 @@ private:
     void onMinValueChanged(const uint16_t);
     void onMaxValueChanged(const uint16_t);
     void onPositionValueChanged(const uint16_t);
-    void onReadData();
     void onReadLine(const QString &);
+    void onReady();
 
     // Profile Settings Signal Slots
 
@@ -103,12 +107,17 @@ private:
 
     void onSpinBoxValueChanged(int);
 
+#ifdef Q_OS_ANDROID
     void onBluetoothDeviceDiscovered(const QStringList &);
     void onBluetoothDeviceScanFinished();
-#ifdef Q_OS_ANDROID
     void onBluetoothServiceDiscovered(const QStringList &);
     void onBluetoothServiceScanFinished();
+
+    hhc::bluetooth *device;
+#else
+    hhc::serial *device;
 #endif
+
     CurveEditor    *pageCurv;
     PageHome       *pageHome;
     PageConnection *pageConn;
@@ -129,11 +138,6 @@ private:
     QAction *actInfo;
     QAction *actQuit;
 
-    hhc::device    *curDevice;
-    hhc::bluetooth *bttDevice;
-#ifndef Q_OS_ANDROID
-    hhc::serial    *serDevice;
-#endif
     bool hasDeviceSetValue; // Flag to avoid enabling buttons when
                             // device changed values, not user.
     bool isStarted;         // onFirstDeviceDataSent() flag

@@ -20,7 +20,7 @@
 namespace hhc
 {
 /**
- * @brief Stores HHC settings.
+ * @brief Stores SmartHHC settings.
  */
 class settings
 {

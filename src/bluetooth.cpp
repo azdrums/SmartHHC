@@ -6,11 +6,12 @@
     License, v. 2.0. If a copy of the MPL was not distributed with this
     file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
+#include <QtGlobal>
+#ifdef Q_OS_ANDROID
+
 #include <QBluetoothAddress>
 #include <QBluetoothDeviceDiscoveryAgent>
-#ifdef Q_OS_ANDROID
 #include <QBluetoothServiceDiscoveryAgent>
-#endif
 #include <QBluetoothSocket>
 
 #include "setup.h"
@@ -22,51 +23,52 @@ bluetooth::bluetooth(QObject *parent)
 :
     device(parent),
     devDiscoveryAgent(new QBluetoothDeviceDiscoveryAgent(this)),
-#ifdef Q_OS_ANDROID
-    svcDiscoveryAgent(new QBluetoothServiceDiscoveryAgent(this)),
-#endif
-    socket(new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol, this))
+    svcDiscoveryAgent(new QBluetoothServiceDiscoveryAgent(this))
 {
-    connect(devDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered,
-            this, &bluetooth::onDeviceDiscovered);
-
-    connect(devDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this,
-            &bluetooth::onDeviceScanFinished);
-#ifdef Q_OS_ANDROID
     connect(svcDiscoveryAgent, &QBluetoothServiceDiscoveryAgent::serviceDiscovered,
             this, &bluetooth::onServiceDiscovered);
 
     connect(svcDiscoveryAgent, &QBluetoothServiceDiscoveryAgent::finished, this,
             &bluetooth::onServiceScanFinished);
-#endif
-    connect(socket, &QBluetoothSocket::connected, this, &device::onConnected);
 
-    connect(socket, &QBluetoothSocket::disconnected, this, &device::onDisconnected);
+    connect(devDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered,
+            this, &bluetooth::onDeviceDiscovered);
 
-    connect(socket,
+    connect(devDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this,
+            &bluetooth::onDeviceScanFinished);
+
+    connect(qIoDevice, &QBluetoothSocket::stateChanged, this, &bluetooth::onStateChanged);
+
+    connect(qIoDevice, &QBluetoothSocket::connected, this, &device::onConnected);
+
+    connect(qIoDevice, &QBluetoothSocket::disconnected, this, &device::onDisconnected);
+
+    connect(qIoDevice,
             QOverload<QBluetoothSocket::SocketError>::of(&QBluetoothSocket::error),
             [=](QBluetoothSocket::SocketError error)
     {
         emit sigError(error);
     });
-    connect(socket, &QBluetoothSocket::readyRead, this,
+    connect(qIoDevice, &QBluetoothSocket::readyRead, this,
             &hhc::bluetooth::onSocketRead);
 }
-#ifndef Q_OS_ANDROID
+/*
+// TODO: This works under Linux, not on Android, see issue
+
 bool bluetooth::open(const QString &addressString)
 {
     QBluetoothAddress address(addressString);
     QBluetoothUuid    uuid(QString("00001101-0000-1000-8000-00805F9B34FB"));
 
-    socket->connectToService(address, uuid);
+    qIoDevice->connectToService(address, uuid);
     return true;
 }
-#else
+*/
 bool bluetooth::open(const QString &addressString)
 {
-    if (isConnected_)
+    if (connState != DisconnectedState)
     {
-        qDebug() << "Trying to open an opened connection.";
+        qDebug() << "qDebug(): Trying to open an opened connection.";
         return false;
     }
     foreach(QBluetoothServiceInfo service, services)
@@ -74,41 +76,13 @@ bool bluetooth::open(const QString &addressString)
         if ((service.isValid()) &&
             (service.device().address().toString() == addressString))
         {
-            socket->connectToService(service);
-            qDebug() << "connectToService(): " << service.serviceName();
+            qIoDevice->connectToService(service);
+            qDebug() << "qDebug(): connectToService(): " << service.serviceName();
             return true;
         }
     }
-    qDebug() << "open() failed.";
+    qDebug() << "qDebug(): open() failed.";
     return false;
-}
-#endif
-void bluetooth::close()
-{
-    if (socket->isOpen())
-        socket->close();
-}
-QString bluetooth::errorString() const
-{
-    if (!socket)
-        return QString();
-
-    return socket->errorString();
-}
-void bluetooth::write(const QByteArray &data)
-{
-    socket->write(data);
-}
-QByteArray bluetooth::readAll()
-{
-    const QByteArray data = socket->readAll();
-    processIncomingData(data);
-    return data;
-}
-void bluetooth::sendCommand(const QString &cmd)
-{
-    QByteArray data = cmd.toUtf8() + "\r\n";
-    socket->write(data);
 }
 void bluetooth::scan()
 {
@@ -125,22 +99,21 @@ void bluetooth::onDeviceDiscovered(const QBluetoothDeviceInfo &deviceInfo)
     QString deviceName    = deviceInfo.name();
     QString deviceAddress = deviceInfo.address().toString();
 
-    if (deviceInfo.name().left(4) != namePrefix)
+    if (deviceInfo.name().left(9) != namePrefix)
     {
-        qDebug() << "Skipping: " << deviceName << " at " << deviceAddress;
+        qDebug() << "qDebug(): Skipping device: " << deviceName << " at " << deviceAddress;
         return;
     }
     QStringList listInfo {deviceName, deviceAddress};
 
     portInfos.push_back(listInfo);
 
-    qDebug() << "Discovered: " << deviceName << " at " << deviceAddress;
+    qDebug() << "qDebug(): Discovered device: " << deviceName << " at " << deviceAddress;
 
     emit sigDeviceDiscovered(listInfo);
 }
 void bluetooth::onDeviceScanFinished()
 {
-#ifdef Q_OS_ANDROID
     if (svcDiscoveryAgent->isActive())
         svcDiscoveryAgent->stop();
 /*
@@ -150,10 +123,9 @@ void bluetooth::onDeviceScanFinished()
     QBluetoothUuid uuid(QString("00001101-0000-1000-8000-00805F9B34FB"));
     svcDiscoveryAgent->setUuidFilter(uuid);
     svcDiscoveryAgent->start(/*QBluetoothServiceDiscoveryAgent::FullDiscovery*/);
-#endif
+
     emit sigDeviceScanFinished();
 }
-#ifdef Q_OS_ANDROID
 void bluetooth::onServiceDiscovered(const QBluetoothServiceInfo &serviceInfo)
 {
     QString serviceName   = serviceInfo.serviceName();
@@ -168,14 +140,14 @@ void bluetooth::onServiceDiscovered(const QBluetoothServiceInfo &serviceInfo)
     }
     if (!found)
     {
-        qDebug() << "Skipping: " << serviceName << " at " << deviceAddress;
+        qDebug() << "qDebug(): Skipping service: " << serviceName << " at " << deviceAddress;
         return;
     }
     QStringList listInfo {serviceName, deviceAddress};
 
     services.push_back(serviceInfo);
 
-    qDebug() << "Discovered: " << serviceName << " at " << deviceAddress;
+    qDebug() << "qDebug(): Discovered service: " << serviceName << " at " << deviceAddress;
 
     emit sigServiceDiscovered(listInfo);
 }
@@ -183,20 +155,21 @@ void bluetooth::onServiceScanFinished()
 {
     emit sigServiceScanFinished();
 }
-#endif
-void bluetooth::onSocketRead()
+void bluetooth::onStateChanged(QBluetoothSocket::SocketState state)
 {
-    if (!socket->isReadable())
-        return;
-
-    while (socket->canReadLine())
+    if (state == QBluetoothSocket::ConnectedState)
     {
-        QByteArray line = socket->readLine();
-        QString strLine = QString::fromUtf8(line.constData(), line.length());
-
-        parse(strLine);
-//      qDebug() << strLine;
-        emit sigReadLine(strLine);
+        connState = ConnectedState;
+    }
+    else if (state == QBluetoothSocket::ConnectingState)
+    {
+        connState = ConnectingState;
+    }
+    else if (state == QBluetoothSocket::UnconnectedState)
+    {
+        connState = DisconnectedState;
     }
 }
 } // namespace hhc
+
+#endif // def Q_OS_ANDROID

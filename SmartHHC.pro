@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core bluetooth
+QT += core
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG  += c++11 # mobility
@@ -31,7 +31,7 @@ SOURCES += src/main.cpp \
            src/ui/qsw/levelbar.cpp \
            src/ui/qsw/spinbox.cpp \
            src/ui/qsw/tablayout.cpp \
-           src/bluetooth.cpp \
+           src/device.cpp \
            src/ui/CurveWidget.cpp \
            src/ui/CurveEditor.cpp \
            src/ui/CurvePage.cpp \
@@ -48,7 +48,6 @@ HEADERS += src/ui/qsw/menustyle.h \
            src/ui/qsw/tablayout.h \
            src/ui/qsw/utils.h \
            src/settings.h \
-           src/bluetooth.h \
            src/device.h \
            src/ui/CurveWidget.h \
            src/ui/CurveEditor.h \
@@ -76,11 +75,17 @@ DISTFILES += android/AndroidManifest.xml \
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
+linux:android {
+    QT += bluetooth
+
+    HEADERS += src/bluetooth.h
+    SOURCES += src/bluetooth.cpp
+}
 linux:!android {
     QT += serialport
 
-    SOURCES += src/serial.cpp
     HEADERS += src/serial.h
+    SOURCES += src/serial.cpp
 
     icon.path = /usr/share/$${TARGET}/icons/
     icon.files = resources/icons/icon.png

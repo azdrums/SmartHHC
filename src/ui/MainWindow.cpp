@@ -25,16 +25,24 @@
 #include "PageAbout.h"
 
 #include "actionbar.h"
-#include "bluetooth.h"
+
 #include "device.h"
 #ifndef Q_OS_ANDROID
-#include "serial.h"
+    #include "serial.h"
+#else
+    #include "bluetooth.h"
 #endif
+
 #include "settings.h"
 #include "spinbox.h"
 #include "tablayout.h"
 
 MainWindow::MainWindow() : QMainWindow(),
+#ifndef Q_OS_ANDROID
+    device(new hhc::serial(this)),
+#else
+    device(new hhc::bluetooth(this)),
+#endif
     pageCurv(new CurveEditor(this)),
     pageHome(new PageHome(this)),
     pageConn(new PageConnection(this)),
@@ -52,19 +60,10 @@ MainWindow::MainWindow() : QMainWindow(),
     actSvAs(new QAction(this)),
     actInfo(new QAction(this)),
     actQuit(new QAction(this)),
-    curDevice(nullptr),
-    bttDevice(new hhc::bluetooth(this)),
-#ifndef Q_OS_ANDROID
-    serDevice(new hhc::serial(this)),
-#endif
     hasDeviceSetValue(false),
     isStarted(false),
     settings(new hhc::settings)
 {
-#ifdef Q_OS_ANDROID
-    curDevice = bttDevice;
-#endif
-
 //  actConn->setIcon(QIcon(":/icons/connect.png"));
     actScan->setIcon(QIcon(":/icons/scan.png"));
     actLoad->setIcon(QIcon(":/icons/open.png"));
@@ -135,11 +134,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
     connect(actBar, &ActionBar::up, this, &MainWindow::onActionBarUp);
 
-    connect(pageConn, &PageConnection::sigIntervalChanged, [=](int)
-    {
-        bool enable = (curDevice->interval() != pageConn->interval());
-        pageConn->setIntervalChanged(enable);
-    });
     connect(pageHome->sbxOpen(),   &SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
     connect(pageHome->sbxClosed(), &SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
     connect(pageHome->sbxFixed1(), &SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
@@ -172,18 +166,74 @@ MainWindow::MainWindow() : QMainWindow(),
 
     connect(pageConn, &PageConnection::sigSettingInterval, this,
             &MainWindow::onSetInterval);
+
+    connect(pageConn, &PageConnection::sigIntervalChanged, [=](int)
+    {
+        bool enable = (device->interval() != pageConn->interval());
+        pageConn->setIntervalChanged(enable);
+    });
+    connect(pageConn, &PageConnection::sigReset, [=]()
+    {
+        device->sendCommand("RESET");
+    });
     connect(pageTerm, &PageTerminal::onGetData, this, &MainWindow::writeData);
 
-    connect(bttDevice, &hhc::bluetooth::sigDeviceDiscovered, this,
+    connect(device, &hhc::device::sigConnected, this,
+            &MainWindow::onConnected);
+
+    connect(device, &hhc::device::sigCurveChanged, this,
+            &MainWindow::onCurveChanged);
+
+    connect(device, &hhc::device::sigCurvePointChanged, this,
+            &MainWindow::onCurvePointChanged);
+
+    connect(device, &hhc::device::sigDisconnected, this,
+            &MainWindow::onDisconnected);
+
+    connect(device, &hhc::device::sigError, this,
+            &MainWindow::onError);
+
+    connect(device, &hhc::device::sigFixed1ValueChanged, this,
+            &MainWindow::onFixed1ValueChanged);
+
+    connect(device, &hhc::device::sigFixed2ValueChanged, this,
+            &MainWindow::onFixed2ValueChanged);
+
+    connect(device, &hhc::device::sigFixed3ValueChanged, this,
+            &MainWindow::onFixed3ValueChanged);
+
+    connect(device, &hhc::device::sigIntervalValueChanged, this,
+            &MainWindow::onIntervalValueChanged);
+
+    connect(device, &hhc::device::sigMaxValueChanged, this,
+            &MainWindow::onMaxValueChanged);
+
+    connect(device, &hhc::device::sigMinValueChanged, this,
+            &MainWindow::onMinValueChanged);
+
+    connect(device, &hhc::device::sigPositionValueChanged, this,
+            &MainWindow::onPositionValueChanged);
+/*
+    connect(device, &hhc::device::sigReadyRead, this,
+            &MainWindow::onReadData);
+*/
+    connect(device, &hhc::device::sigReadLine, this,
+            &MainWindow::onReadLine);
+
+    connect(device, &hhc::device::sigReady, this,
+            &MainWindow::onReady);
+
+#ifdef Q_OS_ANDROID
+    connect(device, &hhc::bluetooth::sigDeviceDiscovered, this,
             &MainWindow::onBluetoothDeviceDiscovered);
 
-    connect(bttDevice, &hhc::bluetooth::sigDeviceScanFinished, this,
+    connect(device, &hhc::bluetooth::sigDeviceScanFinished, this,
             &MainWindow::onBluetoothDeviceScanFinished);
-#ifdef Q_OS_ANDROID
-    connect(bttDevice, &hhc::bluetooth::sigServiceDiscovered, this,
+
+    connect(device, &hhc::bluetooth::sigServiceDiscovered, this,
             &MainWindow::onBluetoothServiceDiscovered);
 
-    connect(bttDevice, &hhc::bluetooth::sigServiceScanFinished, this,
+    connect(device, &hhc::bluetooth::sigServiceScanFinished, this,
             &MainWindow::onBluetoothServiceScanFinished);
 #endif
     setStyleSheet(
@@ -293,7 +343,7 @@ void MainWindow::setConnected(bool connected)
 }
 void MainWindow::writeData(const QByteArray &data)
 {
-    curDevice->write(data);
+    device->write(data);
 }
 void MainWindow::scanDevices()
 {
@@ -301,36 +351,23 @@ void MainWindow::scanDevices()
     pageConn->showScanInProgress();
     pageTerm->clear();
 
-    bttDevice->scan();
+    device->scan();
 
-    bool bluetoothFound  = pageConn->bluetoothDeviceCount() > 0;
-#ifndef Q_OS_ANDROID
-
-//  Force bluetooth connection even with serial port present,
-//  otherwise bt button must be turned off.
-    bool serialPortFound = false;
-    if (!bluetoothFound)
-    {
-        serDevice->scan();
-
-        for (int i = 0; i < serDevice->portCount(); i++)
-        {
-            QStringList listInfos = serDevice->portInfosAt(i);
-
-//          Blacklist rfcommX ports, will use QBluetoothDevice instead
-            if (serDevice->portName(i).left(6) != "rfcomm")
-            {
-                curDevice = serDevice;
-                serialPortFound = true;
-                pageConn->showSerialPortOptions();
-                pageConn->addSerialPort(serDevice->portName(i), listInfos);
-            }
-        }
-    }
-    if (!bluetoothFound && !serialPortFound)
+    bool deviceFound =
+#ifdef Q_OS_ANDROID
+    pageConn->bluetoothDeviceCount() > 0;
 #else
-    if (!bluetoothFound)
+    false;
+    for (int i = 0; i < device->portCount(); i++)
+    {
+        QStringList listInfos = device->portInfosAt(i);
+
+        deviceFound = true;
+        pageConn->showSerialPortOptions();
+        pageConn->addSerialPort(device->portName(i), listInfos);
+    }
 #endif
+    if (!deviceFound)
     {
         actConn->setEnabled(false);
         pageConn->showNotFound();
@@ -340,10 +377,10 @@ void MainWindow::scanDevices()
 }
 void MainWindow::doToggleConnection()
 {
-    if (!curDevice)
+    if (!device)
         return;
 
-    if (curDevice->isConnected())
+    if (device->state() == hhc::device::ConnectedState)
     {
         doDisconnect();
     }
@@ -355,15 +392,55 @@ void MainWindow::doToggleConnection()
 }
 void MainWindow::doConnect()
 {
-    QString portName = pageConn->bluetoothAddress();
-
+    QString portName =
 #ifndef Q_OS_ANDROID
-    if (curDevice->type() == hhc::device::Serial)
-        portName = pageConn->serialPortName();
+        pageConn->serialPortName();
+#else
+        pageConn->bluetoothAddress();
 #endif
     if (!portName.isEmpty())
     {
-        if (curDevice->open(portName))
+/*
+        connect(device, &hhc::device::sigConnected, this,
+                &MainWindow::onConnected);
+
+        connect(device, &hhc::device::sigCurveChanged, this,
+                &MainWindow::onCurveChanged);
+
+        connect(device, &hhc::device::sigCurvePointChanged, this,
+                &MainWindow::onCurvePointChanged);
+
+        connect(device, &hhc::device::sigDisconnected, this,
+                &MainWindow::onDisconnected);
+
+        connect(device, &hhc::device::sigError, this,
+                &MainWindow::onError);
+
+        connect(device, &hhc::device::sigFixed1ValueChanged, this,
+                &MainWindow::onFixed1ValueChanged);
+
+        connect(device, &hhc::device::sigFixed2ValueChanged, this,
+                &MainWindow::onFixed2ValueChanged);
+
+        connect(device, &hhc::device::sigFixed3ValueChanged, this,
+                &MainWindow::onFixed3ValueChanged);
+
+        connect(device, &hhc::device::sigIntervalValueChanged, this,
+                &MainWindow::onIntervalValueChanged);
+
+        connect(device, &hhc::device::sigMaxValueChanged, this,
+                &MainWindow::onMaxValueChanged);
+
+        connect(device, &hhc::device::sigMinValueChanged, this,
+                &MainWindow::onMinValueChanged);
+
+        connect(device, &hhc::device::sigPositionValueChanged, this,
+                &MainWindow::onPositionValueChanged);
+
+        connect(device, &hhc::device::sigReadLine, this,
+                &MainWindow::onReadLine);
+*/
+        if (device->open(portName))
         {
 /*
             Enable immediatly the CLI so if something goes wrong
@@ -372,103 +449,58 @@ void MainWindow::doConnect()
             pageTerm->setConnected(true);
             pageTerm->setFocusCLI();
 
-#ifndef Q_OS_ANDROID
-            if (curDevice->type() == hhc::device::Serial)
-                pageTerm->write(tr("(i) Connected.\n"));
-            else
-#endif
-                pageTerm->write(tr("(i) Connecting...\n"));
-
-            connect(curDevice, &hhc::device::sigConnected, this,
-                    &MainWindow::onConnected);
-
-            connect(curDevice, &hhc::device::sigCurveChanged, this,
-                    &MainWindow::onCurveChanged);
-
-            connect(curDevice, &hhc::device::sigCurvePointChanged, this,
-                    &MainWindow::onCurvePointChanged);
-
-            connect(curDevice, &hhc::device::sigDisconnected, this,
-                    &MainWindow::onDisconnected);
-
-            connect(curDevice, &hhc::device::sigError, this,
-                    &MainWindow::onError);
-
-            connect(curDevice, &hhc::device::sigFixed1ValueChanged, this,
-                    &MainWindow::onFixed1ValueChanged);
-
-            connect(curDevice, &hhc::device::sigFixed2ValueChanged, this,
-                    &MainWindow::onFixed2ValueChanged);
-
-            connect(curDevice, &hhc::device::sigFixed3ValueChanged, this,
-                    &MainWindow::onFixed3ValueChanged);
-
-            connect(curDevice, &hhc::device::sigIntervalValueChanged, this,
-                    &MainWindow::onIntervalValueChanged);
-
-            connect(curDevice, &hhc::device::sigMaxValueChanged, this,
-                    &MainWindow::onMaxValueChanged);
-
-            connect(curDevice, &hhc::device::sigMinValueChanged, this,
-                    &MainWindow::onMinValueChanged);
-
-            connect(curDevice, &hhc::device::sigPositionValueChanged, this,
-                    &MainWindow::onPositionValueChanged);
-
-            connect(curDevice, &hhc::device::sigReadLine, this,
-                    &MainWindow::onReadLine);
-
             actConn->setIcon(QIcon(":/icons/disconnect.png"));
             actConn->setText(tr("Disconnect"));
+#ifdef Q_OS_ANDROID
+            pageTerm->write(tr("(i) Connecting...\n"));
+#endif
         }
         else
         {
-            pageTerm->write(tr("(!) Error: ") + curDevice->errorString() + "\n");
+            pageTerm->write(tr("(!) Error: ") + device->errorString() + "\n");
             return;
         }
     }
 }
 void MainWindow::doDisconnect()
 {
-    disconnect(curDevice, &hhc::device::sigConnected,            this, &MainWindow::onConnected);
-    disconnect(curDevice, &hhc::device::sigCurveChanged,         this, &MainWindow::onCurveChanged);
-    disconnect(curDevice, &hhc::device::sigCurvePointChanged,    this, &MainWindow::onCurvePointChanged);
-    disconnect(curDevice, &hhc::device::sigError,                this, &MainWindow::onError);
-    disconnect(curDevice, &hhc::device::sigFixed1ValueChanged,   this, &MainWindow::onFixed1ValueChanged);
-    disconnect(curDevice, &hhc::device::sigFixed2ValueChanged,   this, &MainWindow::onFixed2ValueChanged);
-    disconnect(curDevice, &hhc::device::sigFixed3ValueChanged,   this, &MainWindow::onFixed3ValueChanged);
-    disconnect(curDevice, &hhc::device::sigIntervalValueChanged, this, &MainWindow::onIntervalValueChanged);
-    disconnect(curDevice, &hhc::device::sigMaxValueChanged,      this, &MainWindow::onMaxValueChanged);
-    disconnect(curDevice, &hhc::device::sigMinValueChanged,      this, &MainWindow::onMinValueChanged);
-    disconnect(curDevice, &hhc::device::sigPositionValueChanged, this, &MainWindow::onPositionValueChanged);
-    disconnect(bttDevice, &hhc::bluetooth::sigReadLine,          this, &MainWindow::onReadLine);
-
-    curDevice->close();
-
+    device->close();
+/*
+    disconnect(device, &hhc::device::sigConnected,            this, &MainWindow::onConnected);
+    disconnect(device, &hhc::device::sigCurveChanged,         this, &MainWindow::onCurveChanged);
+    disconnect(device, &hhc::device::sigCurvePointChanged,    this, &MainWindow::onCurvePointChanged);
+    disconnect(device, &hhc::device::sigError,                this, &MainWindow::onError);
+    disconnect(device, &hhc::device::sigFixed1ValueChanged,   this, &MainWindow::onFixed1ValueChanged);
+    disconnect(device, &hhc::device::sigFixed2ValueChanged,   this, &MainWindow::onFixed2ValueChanged);
+    disconnect(device, &hhc::device::sigFixed3ValueChanged,   this, &MainWindow::onFixed3ValueChanged);
+    disconnect(device, &hhc::device::sigIntervalValueChanged, this, &MainWindow::onIntervalValueChanged);
+    disconnect(device, &hhc::device::sigMaxValueChanged,      this, &MainWindow::onMaxValueChanged);
+    disconnect(device, &hhc::device::sigMinValueChanged,      this, &MainWindow::onMinValueChanged);
+    disconnect(device, &hhc::device::sigPositionValueChanged, this, &MainWindow::onPositionValueChanged);
+    disconnect(device, &hhc::device::sigReadLine,             this, &MainWindow::onReadLine);
+*/
     isStarted = false;
 }
 void MainWindow::onConnected()
 {
     setConnected(true);
     pageTerm->write(tr("(i) Connected.\n"));
-    curDevice->requestData();
 }
 void MainWindow::onDisconnected()
 {
-    disconnect(curDevice, &hhc::device::sigDisconnected, this,
-               &MainWindow::onDisconnected);
-
     pageTerm->clear();
     pageTerm->write(tr("(i) Disconnected.\n"));
     actScan->setEnabled(true);
 
     setConnected(false);
+/*
+    disconnect(device, &hhc::device::sigDisconnected, this,
+               &MainWindow::onDisconnected);
+*/
 }
-void MainWindow::onReadData()
+void MainWindow::onReady()
 {
-    const QByteArray data = curDevice->readAll();
-    pageTerm->write(data);
-    pageTerm->scrollDown();
+    qDebug() << "qDebug(): Got ready signal.";
 }
 void MainWindow::onReadLine(const QString &line)
 {
@@ -481,19 +513,15 @@ void MainWindow::onError(uint8_t error)
     QString errorString;
 
 #ifndef Q_OS_ANDROID
-    if (curDevice->type() == hhc::device::Type::Serial)
+    if (error == hhc::serial::ResourceError)
     {
-        if (error == hhc::serial::ResourceError)
-        {
-            errorString = tr("(!) Critical Error: ") + curDevice->errorString() + ".\n";
-            isCritical = true;
-        }
+        errorString = tr("(!) Critical Error: ") + device->errorString() + ".\n";
+        isCritical = true;
     }
-    else
 #endif
     if (error > 0) // TODO: Check errors in a better way for disconnection
     {
-        errorString = tr("(!) Critical Error: ") + curDevice->errorString() + ".\n";
+        errorString = tr("(!) Critical Error: ") + device->errorString() + ".\n";
         isCritical = true;
     }
     if (isCritical)
@@ -529,7 +557,7 @@ void MainWindow::onCurveChanged(const QStringList &strList)
 void MainWindow::onCurvePointChanged(const QPoint &curvePoint)
 {
     pageCurv->currentPage()->setValue(curvePoint.x(), curvePoint.y());
-//  qDebug() << "X: " << curvePoint.x() << " Y: " << curvePoint.y();
+//  qDebug() << "qDebug(): X: " << curvePoint.x() << " Y: " << curvePoint.y();
 }
 void MainWindow::onFixed1ValueChanged(const uint8_t value)
 {
@@ -561,7 +589,7 @@ void MainWindow::onMaxValueChanged(const uint16_t value)
     settings->setMaxPosition(value);
     pageHome->setMaxPosition(value);
 
-//  if (curDevice->position() > curDevice->maxPosition())
+//  if (device->position() > device->maxPosition())
 //      pbrHHLevel->setValue(value);
 }
 void MainWindow::onPositionValueChanged(const uint16_t value)
@@ -638,39 +666,39 @@ void MainWindow::onActionBarUp()
 }
 void MainWindow::onSetFixed1()
 {
-    curDevice->setFixed1(pageHome->fixed1());
+    device->setFixed1(pageHome->fixed1());
     pageHome->disablePedalSetButton(pageHome->tbnSetFixed1());
 }
 void MainWindow::onSetFixed2()
 {
-    curDevice->setFixed2(pageHome->fixed2());
+    device->setFixed2(pageHome->fixed2());
     pageHome->disablePedalSetButton(pageHome->tbnSetFixed2());
 }
 void MainWindow::onSetFixed3()
 {
-    curDevice->setFixed3(pageHome->fixed3());
+    device->setFixed3(pageHome->fixed3());
     pageHome->disablePedalSetButton(pageHome->tbnSetFixed3());
 }
 void MainWindow::onSetClosed()
 {
-    curDevice->setMinPosition(pageHome->minPosition());
+    device->setMinPosition(pageHome->minPosition());
     pageHome->disablePedalSetButton(pageHome->tbnSetClosed());
 }
 void MainWindow::onSetOpen()
 {
-    curDevice->setMaxPosition(pageHome->maxPosition());
+    device->setMaxPosition(pageHome->maxPosition());
     pageHome->disablePedalSetButton(pageHome->tbnSetOpen());
 }
 void MainWindow::onSetAsClosed()
 {
     uint16_t value = pageHome->position();
-    curDevice->setMinPosition(value);
+    device->setMinPosition(value);
     pageHome->setSetupUnsaved();
 }
 void MainWindow::onSetAsOpen()
 {
     uint16_t value = pageHome->position();
-    curDevice->setMaxPosition(value);
+    device->setMaxPosition(value);
     pageHome->setSetupUnsaved();
 }
 void MainWindow::onPedalPositionsSet()
@@ -684,11 +712,11 @@ void MainWindow::onPedalPositionsSet()
 }
 void MainWindow::onPedalPositionsSave()
 {
-    curDevice->writeFixed1();
-    curDevice->writeFixed2();
-    curDevice->writeFixed3();
-    curDevice->writeMinMax();
-//  curDevice->writeCurve();
+    device->writeFixed1();
+    device->writeFixed2();
+    device->writeFixed3();
+    device->writeMinMax();
+//  device->writeCurve();
     pageHome->setSetupClean();;
 }
 void MainWindow::onPedalPositionsRestore()
@@ -698,7 +726,7 @@ void MainWindow::onPedalPositionsRestore()
 }
 void MainWindow::onSetInterval()
 {
-    curDevice->setInterval(pageConn->interval());
+    device->setInterval(pageConn->interval());
 }
 void MainWindow::onSpinBoxValueChanged(int value)
 {
@@ -753,7 +781,7 @@ void MainWindow::setCurrentIndex(int)
 }
 void MainWindow::onCurveCancel()
 {
-    QStringList  curveList = curDevice->curve();
+    QStringList  curveList = device->curve();
     QVector<int> values(QVector<int>(HHCurve::MaxValue + 1));
 
     for (int i = 0; i < values.size(); ++i)
@@ -768,7 +796,7 @@ void MainWindow::onCurveOk()
     for (int i = 0; i < values.size(); ++i)
     {
         QPoint point(i, values.at(i));
-        curDevice->setCurvePoint(point);
+        device->setCurvePoint(point);
     }
 }
 void MainWindow::onCurveSave()
@@ -776,18 +804,18 @@ void MainWindow::onCurveSave()
     QVector<int> values = pageCurv->currentPage()->values();
 
     pageCurv->setValuesAt(0, values); // Update the read-only curve slot
-    curDevice->writeCurve();
+    device->writeCurve();
 }
+#ifdef Q_OS_ANDROID
 void MainWindow::onBluetoothDeviceDiscovered(const QStringList &listInfos)
 {
     QString deviceName    = listInfos.at(0);
     QString deviceAddress = listInfos.at(1);
 
-    qDebug() << "Found: " << deviceName << " at " << deviceAddress;
+    qDebug() << "qDebug(): Device found: " << deviceName << " at " << deviceAddress;
 
     if (pageConn->bluetoothDeviceCount() == 0)
     {
-        curDevice = bttDevice;
         actConn->setEnabled(true);
         pageConn->showBluetoothDeviceOptions();
         pageTerm->clear();
@@ -799,13 +827,12 @@ void MainWindow::onBluetoothDeviceScanFinished()
 {
     pageConn->bluetoothDeviceScanFinished();
 }
-#ifdef Q_OS_ANDROID
 void MainWindow::onBluetoothServiceDiscovered(const QStringList &listInfos)
 {
     QString serviceName   = listInfos.at(0);
     QString deviceAddress = listInfos.at(1);
 
-    qDebug() << "Found: " << serviceName << " at " << deviceAddress;
+    qDebug() << "qDebug(): Service found: " << serviceName << " at " << deviceAddress;
 
     pageConn->updateBluetoothServiceScanProgress(QString(tr("%1"))
                                                 .arg(serviceName));

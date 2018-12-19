@@ -6,18 +6,19 @@
     License, v. 2.0. If a copy of the MPL was not distributed with this
     file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
+#include <QtGlobal>
+#ifndef Q_OS_ANDROID
 #ifndef SERIAL_H
 #define SERIAL_H
 
-#include "device.h"
-
-#include <QPoint>
 #include <QSerialPort>
 
+#include "device.h"
 /**
  * @brief Application specific namespace.
  */
 namespace hhc {
+
 class serial : public device
 {
     Q_OBJECT
@@ -43,22 +44,14 @@ public:
         TimeoutError = 12,
         NotOpenError = 13
     };
-    QByteArray readAll();
-    void write(const QByteArray &);
-    void close();
     bool open(const QString &);
-    QString errorString() const;
     Type type() const {return Type::Serial;}
-    void sendCommand(const QString &);
-
     void scan();
 
 private:
     void onErrorOccurredRedirect(QSerialPort::SerialPortError);
-    void onSocketRead();
-
-    QSerialPort *m_qSerial = nullptr;
 };
 } // namespace hhc
 
 #endif // SERIAL_H
+#endif // ndef Q_OS_ANDROID
