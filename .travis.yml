@@ -1,17 +1,19 @@
 language: cpp
+os: linux
 compiler: gcc
-
-matrix:
-  include:
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-      env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+sudo: required
+dist: xenial
 
 before_install:
-    - eval "${MATRIX_EVAL}"
+  - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.11.2-xenial
+  - sudo apt-get -qq update
+
+install:
+  - sudo apt-get --yes install qt511base qt511serialport
+
+before_script:
+  - source /opt/qt511/bin/qt511-env.sh
+  - qmake SmartHHC.pro -spec linux-g++ CONFIG+=debug
+
+script:
+  - make
