@@ -9,6 +9,7 @@ before_install:
   - sudo apt-get -qq update
 
 install:
+  - sudo apt install libgl1-mesa-dev
   - sudo apt-get --yes install qt511base qt511serialport
 
 before_script:
