@@ -288,6 +288,11 @@ resetDo();
 Serial.println("after reset \n");   
 }
 
+
+void hc_ping() {
+  Serial.println("PONG");
+}
+
 void hcInit() {
  sCmd.addCommand("RESET",hc_reset);        // DOes a soft-reset by jumping to address 0
  sCmd.addCommand("RST",hc_reset);        // DOes a soft-reset by jumping to address 0
@@ -295,6 +300,7 @@ void hcInit() {
  sCmd.addCommand("HELLO", hc_about);        // Echos the string argument back
  sCmd.addCommand("?", hc_about);        // Echos the string argument back
  sCmd.addCommand("G", hc_G);        //get values command
+ sCmd.addCommand("PING",hc_ping);
  sCmd.addCommand("S", hc_S);        //set values command
  sCmd.addCommand("W", hc_W);        //write to EEPROM command
  sCmd.addCommand("C", hc_C);        //write to EEPROM command
