@@ -282,7 +282,7 @@ void hc_NULL(const char *command) {
 
 void hc_reset() {
   
-Serial.println("soft reset");
+Serial.println("RESTART:OK");
 delay(50);
 resetDo();
 Serial.println("after reset \n");   
@@ -294,6 +294,7 @@ void hc_ping() {
 }
 
 void hcInit() {
+ sCmd.addCommand("RESTART",hc_reset); // Does a software restart by jumping to address 0
  sCmd.addCommand("RESET",hc_reset);        // DOes a soft-reset by jumping to address 0
  sCmd.addCommand("RST",hc_reset);        // DOes a soft-reset by jumping to address 0
  sCmd.addCommand("HELO", hc_about);        // Echos the string argument back
