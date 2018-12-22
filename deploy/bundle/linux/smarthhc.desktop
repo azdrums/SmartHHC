@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=SmartHHC
+GenericName=Electronic Drums HiHat Controller
+Comment=Open-source digital hihat controller
+Exec=smarthhc
+Icon=icon
+Categories=Qt;AudioVideo;Audio;Music;Midi;

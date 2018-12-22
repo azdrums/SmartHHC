@@ -66,8 +66,7 @@ FORMS +=   src/ui/PageAbout.ui \
 
 RESOURCES += resources/resources.qrc
 
-TRANSLATIONS += resources/translations/smarthhc_it.ts \
-                resources/translations/smarthhc_bg.ts
+TRANSLATIONS += resources/translations/smarthhc_it.ts
 
 DISTFILES += android/AndroidManifest.xml \
              android/res/values/libs.xml \
@@ -87,14 +86,17 @@ linux:!android {
     HEADERS += src/serial.h
     SOURCES += src/serial.cpp
 
+    desktop.path = /usr/share/applications/
+    desktop.files = deploy/bundle/linux/smarthhc.desktop
+
     icon.path = /usr/share/$${TARGET}/icons/
     icon.files = resources/icons/icon.png
 
-    translations.path = /usr/share/$${TARGET}/translations
+    translations.path = /usr/share/$${TARGET}/translations/
     translations.files = resources/translations/*.qm
 
     target.files = $${TARGET}
     target.path = /usr/bin
 
-    INSTALLS += icon translations target
+    INSTALLS += desktop icon translations target
 }

@@ -5,16 +5,30 @@ sudo: required
 dist: xenial
 
 before_install:
-  - sudo add-apt-repository --yes ppa:beineri/opt-qt-5.11.2-xenial
-  - sudo apt-get -qq update
+- sudo add-apt-repository ppa:beineri/opt-qt-5.11.2-xenial -y
+- sudo apt-get update -qq
 
 install:
-  - sudo apt install libgl1-mesa-dev
-  - sudo apt-get --yes install qt511base qt511serialport
-
-before_script:
-  - source /opt/qt511/bin/qt511-env.sh
-  - qmake SmartHHC.pro -spec linux-g++ CONFIG+=debug
+- sudo apt-get -y install libgl1-mesa-dev qt511base qt511serialport
+- source /opt/qt*/bin/qt*-env.sh
 
 script:
-  - make
+- qmake SmartHHC.pro -spec linux-g++ CONFIG+=release PREFIX=/usr
+- make -j$(nproc)
+- make INSTALL_ROOT=SmartHHC install
+
+after_success:
+- chmod +x ./deploy/deploy.sh
+- source ./deploy/deploy.sh
+
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: EgJEc+oJls74TNu1g3KG1BCBnwr5Vyrfk5lG7cy2SiMlztFaVQmRistgAWdWnsWI3umH/Yr4ySLtD8DDFZoUUtLEshGfyZkxI0vF8pFnalBEpVxqHIf8oiZKA0KtK0Az4jk3INftgHz6ItgsXoSlG3eFovWQ3xsdQIFPWLbM6D3Mtmw9sQIrzmdRyOwv63Z+knr2ENK7jsXorbJ6Patekg3WmqHNOclzBJqbWyEyCNwkB86vrfhT7mL+v0/OdCu8cNPfhiCxwaJpTxUxeibXxUFZwzTb8AZdIpAZ7Oc2gPlXYPg01h5Bp30zHduZWvOt98zSKiXw6Cc7zlgFAyWzNDjdW80WbqmAP50DsPYWPnsrKPOoTGfwym8IwX+QsmoqXxxDlNNgqWLoeAySWVNUEGe+N8YftpbxUNQ3xz5i9mG8nN+fQHtl+wLtnJOFKdeXeQH6Ho6xKA3j9Tyo7RypUgfiWFv2QWXRcVy3nMIuMQKcFSZ7SzfVi4Z9oBB+PDtSGxNCwlOzF18p/MV9MRHgFF5cvYfZDEdifTyEukQkUf3dm4vATrEiRpUH9jZ9IXXuXYFpnMutxJCRnfkkzFfpzE/lpBjo1AlSJ8Sh3JHvAE4p3oGSaLGlnpQEeV0/q8SzTZWrjaHX1D1ELRVNa1xNTtI0DzOB6cBHdxp5XlbJhuc=
+
+  file: "$DEPLOYFILE"
+  on:
+    repo: azdrums/smarthhc
+
+tags: true
