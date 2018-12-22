@@ -27,10 +27,6 @@
         <translation>Connetti</translation>
     </message>
     <message>
-        <source>Connect to serial port (CTRL+O)</source>
-        <translation>Connetti la porta seriale (CTRL+O)</translation>
-    </message>
-    <message>
         <source>Disconnect</source>
         <translation>Disconnetti</translation>
     </message>
@@ -39,48 +35,8 @@
         <translation>Scansione</translation>
     </message>
     <message>
-        <source>Scan serial ports (CTRL+S)</source>
-        <translation>Ricerca porte seriali (CTRL+S)</translation>
-    </message>
-    <message>
-        <source>Load</source>
-        <translation>Carica</translation>
-    </message>
-    <message>
-        <source>Load a Profile</source>
-        <translation>Carica un Profilo</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Salva</translation>
-    </message>
-    <message>
-        <source>Save Profile</source>
-        <translation>Salva Profilo</translation>
-    </message>
-    <message>
-        <source>Save As...</source>
-        <translation>Salva Come...</translation>
-    </message>
-    <message>
         <source>Save Profile As...</source>
         <translation>Salva Profilo Come...</translation>
-    </message>
-    <message>
-        <source>About</source>
-        <translation>Informazioni</translation>
-    </message>
-    <message>
-        <source>Show About (CTRL+I)</source>
-        <translation>Mostra Informazioni (CTRL+I)</translation>
-    </message>
-    <message>
-        <source>Quit</source>
-        <translation>Esci</translation>
-    </message>
-    <message>
-        <source>Exit Application (CTRL+Q)</source>
-        <translation>Chiude l&apos;Applicazione (CTRL+Q)</translation>
     </message>
     <message>
         <source>Home</source>
@@ -125,12 +81,6 @@ Controlla le connessioni e riavvia l&apos;applicazione.
 </translation>
     </message>
     <message>
-        <source>(i) Disconnecting...
-</source>
-        <translation>(i) Disconnessione...
-</translation>
-    </message>
-    <message>
         <source>(!) Critical Error: </source>
         <translation>(!) Errore Critico: </translation>
     </message>
@@ -159,20 +109,24 @@ Controlla le connessioni e riavvia l&apos;applicazione.
         <translation>Terminale</translation>
     </message>
     <message>
-        <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <source>Save As...</source>
+        <translation>Salva Come...</translation>
     </message>
     <message>
-        <source>Ctrl+S</source>
-        <translation>Ctrl+S</translation>
+        <source>Save (CTRL+S)</source>
+        <translation>Salva (CTRL+S)</translation>
     </message>
     <message>
-        <source>Ctrl+I</source>
-        <translation>Ctrl+I</translation>
+        <source>About (CTRL+I)</source>
+        <translation>Informazioni (CTRL+I)</translation>
     </message>
     <message>
-        <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
+        <source>Quit (CTRL+Q)</source>
+        <translation>Esci (CTRL+Q)</translation>
+    </message>
+    <message>
+        <source>Open... (CTRL+O)</source>
+        <translation>Apri... (CTRL+O)</translation>
     </message>
 </context>
 <context>
@@ -205,14 +159,6 @@ Controlla le connessioni e riavvia l&apos;applicazione.
 <context>
     <name>PageConnection</name>
     <message>
-        <source>Port</source>
-        <translation>Porta</translation>
-    </message>
-    <message>
-        <source>Refresh Interval</source>
-        <translation>Aggiorna ogni</translation>
-    </message>
-    <message>
         <source>ms</source>
         <translation>ms</translation>
     </message>
@@ -243,6 +189,54 @@ Controlla le connessioni e riavvia l&apos;applicazione.
     <message>
         <source>N/A</source>
         <translation>N/D</translation>
+    </message>
+    <message>
+        <source>No Devices Found</source>
+        <translation>Nessun Dispositivo Trovato</translation>
+    </message>
+    <message>
+        <source>Refresh Interval:</source>
+        <translation>Aggiornamento:</translation>
+    </message>
+    <message>
+        <source>Serial</source>
+        <translation>Seriale</translation>
+    </message>
+    <message>
+        <source>Port:</source>
+        <translation>Porta:</translation>
+    </message>
+    <message>
+        <source>Bluetooth</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Device:</source>
+        <translation>Dispositivo:</translation>
+    </message>
+    <message>
+        <source>Device Address:</source>
+        <translation>Indirizzo:</translation>
+    </message>
+    <message>
+        <source>Scan Devices:</source>
+        <translation>Dispositivi:</translation>
+    </message>
+    <message>
+        <source>Scan Services:</source>
+        <translation>Servizi:</translation>
+    </message>
+    <message>
+        <source>Soft Reset</source>
+        <translation>Reset</translation>
+    </message>
+    <message>
+        <source>Scanning...</source>
+        <translation>Scansione...</translation>
+    </message>
+    <message>
+        <source>Completed.</source>
+        <translation>Completata.</translation>
     </message>
 </context>
 <context>
@@ -297,13 +291,6 @@ Controlla le connessioni e riavvia l&apos;applicazione.
     <message>
         <source>Clear Log (CTRL+C)</source>
         <translation>Pulisci Log (CTRL+C)</translation>
-    </message>
-</context>
-<context>
-    <name>hhc::bluetooth</name>
-    <message>
-        <source>N/A</source>
-        <translation>N/D</translation>
     </message>
 </context>
 <context>
