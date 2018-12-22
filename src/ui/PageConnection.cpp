@@ -54,9 +54,9 @@ PageConnection::PageConnection(QWidget *parent)
         emit sigSettingInterval();
         ui->tbnInterval->setEnabled(false);
     });
-    connect(ui->tbnReset, &QToolButton::clicked, [=]()
+    connect(ui->tbnRestart, &QToolButton::clicked, [=]()
     {
-        emit sigReset();
+        emit sigRestart();
     });
 #ifdef Q_OS_ANDROID
     connect(ui->cbxDevice, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -72,7 +72,7 @@ void PageConnection::setConnected(bool connected)
     ui->lblPort->setEnabled(!connected);
     ui->cbxPort->setEnabled(!connected);
     ui->sbxInterval->setEnabled(connected);
-    ui->tbnReset->setEnabled(connected);
+    ui->tbnRestart->setEnabled(connected);
 
     if (!connected)
     {
@@ -127,7 +127,7 @@ void PageConnection::showNotFound()
     ui->tbnInterval->hide();
     ui->gbxBluetooth->hide();
     ui->gbxSerialPort->hide();
-    ui->tbnReset->hide();
+    ui->tbnRestart->hide();
 }
 #ifndef Q_OS_ANDROID
 ConnectionType PageConnection::connectionType() const
@@ -159,7 +159,7 @@ void PageConnection::showSerialPortOptions()
     ui->sbxInterval->show();
     ui->tbnInterval->show();
     ui->gbxSerialPort->show();
-    ui->tbnReset->show();
+    ui->tbnRestart->show();
 }
 void PageConnection::resetSerialPortInfos()
 {
@@ -209,7 +209,7 @@ void PageConnection::showBluetoothDeviceOptions()
     ui->sbxInterval->show();
     ui->tbnInterval->show();
     ui->gbxBluetooth->show();
-    ui->tbnReset->show();
+    ui->tbnRestart->show();
 }
 int PageConnection::bluetoothDeviceCount()
 {

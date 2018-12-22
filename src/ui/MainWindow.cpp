@@ -74,19 +74,11 @@ MainWindow::MainWindow() : QMainWindow(),
 
 //  actConn->setText(tr("Connect"));
     actScan->setText(tr("Scan"));
-    actLoad->setText(tr("Open"));
-    actSave->setText(tr("Save"));
-    actSvAs->setText(tr("Save As.."));
-    actInfo->setText(tr("About"));
-    actQuit->setText(tr("Quit"));
-
-    actConn->setToolTip(tr("Connect Selected Device"));
-    actScan->setToolTip(tr("Scan Devices"));
-    actLoad->setToolTip(tr("Open Profile (CTRL+O)"));
-    actSave->setToolTip(tr("Save Profile (CTRL+S)"));
-    actSvAs->setToolTip(tr("Save Profile As.."));
-    actInfo->setToolTip(tr("Show About (CTRL+I)"));
-    actQuit->setToolTip(tr("Quit Application (CTRL+Q)"));
+    actLoad->setText(tr("Open... (CTRL+O)"));
+    actSave->setText(tr("Save (CTRL+S)"));
+    actSvAs->setText(tr("Save As..."));
+    actInfo->setText(tr("About (CTRL+I)"));
+    actQuit->setText(tr("Quit (CTRL+Q)"));
 
     actLoad->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
     actSave->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
@@ -172,9 +164,9 @@ MainWindow::MainWindow() : QMainWindow(),
         bool enable = (device->interval() != pageConn->interval());
         pageConn->setIntervalChanged(enable);
     });
-    connect(pageConn, &PageConnection::sigReset, [=]()
+    connect(pageConn, &PageConnection::sigRestart, [=]()
     {
-        device->sendCommand("RESET");
+        device->sendCommand("RESTART");
     });
     connect(pageTerm, &PageTerminal::onGetData, this, &MainWindow::writeData);
 
@@ -820,7 +812,7 @@ void MainWindow::onBluetoothDeviceDiscovered(const QStringList &listInfos)
         pageConn->showBluetoothDeviceOptions();
         pageTerm->clear();
     }
-    pageConn->updateBluetoothDeviceScanProgress(QString(tr("%1")).arg(deviceName));
+    pageConn->updateBluetoothDeviceScanProgress(QString("%1").arg(deviceName));
     pageConn->addBluetoothDevice(deviceName, deviceAddress);
 }
 void MainWindow::onBluetoothDeviceScanFinished()
@@ -834,8 +826,7 @@ void MainWindow::onBluetoothServiceDiscovered(const QStringList &listInfos)
 
     qDebug() << "qDebug(): Service found: " << serviceName << " at " << deviceAddress;
 
-    pageConn->updateBluetoothServiceScanProgress(QString(tr("%1"))
-                                                .arg(serviceName));
+    pageConn->updateBluetoothServiceScanProgress(QString("%1").arg(serviceName));
 }
 void MainWindow::onBluetoothServiceScanFinished()
 {

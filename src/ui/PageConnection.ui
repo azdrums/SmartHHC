@@ -363,7 +363,7 @@
        <number>12</number>
       </property>
       <item>
-       <widget class="QToolButton" name="tbnReset">
+       <widget class="QToolButton" name="tbnRestart">
         <property name="minimumSize">
          <size>
           <width>48</width>
@@ -371,7 +371,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Soft Reset</string>
+         <string>Restart</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/resources.qrc">

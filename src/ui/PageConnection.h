@@ -83,7 +83,7 @@ signals:
     void sigIntervalChanged(int);
     void sigSettingInterval();
 
-    void sigReset();
+    void sigRestart();
 
 private:
     Ui::PageConnection *ui;

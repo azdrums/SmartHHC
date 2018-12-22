@@ -279,8 +279,7 @@ void device::parse(QString line)
         if (m_curve.size() == 128)
             emit sigCurveChanged(m_curve);
     }
-    // TODO: Change fw string for this
-    else if (tokens.at(0).left(4) == "soft")
+    else if (tokens.at(0) == "RESTART")
     {
         isStarted = false;
     }
