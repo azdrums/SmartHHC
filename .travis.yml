@@ -1,21 +1,30 @@
 language: cpp
-os: linux
-compiler: gcc
-sudo: required
-dist: xenial
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      sudo: required
+      compiler: gcc
+    - os: osx
+      osx_image: xcode10.1
 
 before_install:
-- sudo add-apt-repository ppa:beineri/opt-qt-5.11.2-xenial -y
-- sudo apt-get update -qq
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                                   ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt-5.11.2-xenial -y ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq                                     ; fi
 
 install:
-- sudo apt-get -y install libgl1-mesa-dev qt511base qt511serialport
-- source /opt/qt*/bin/qt*-env.sh
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5                                                    ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew link --force qt5                                               ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -y install libgl1-mesa-dev qt511base qt511serialport ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source /opt/qt*/bin/qt*-env.sh                                    ; fi
 
 script:
-- qmake SmartHHC.pro -spec linux-g++ CONFIG+=release PREFIX=/usr
-- make -j$(nproc)
-- make INSTALL_ROOT=SmartHHC install
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then qmake SmartHHC.pro -spec macx-xcode CONFIG+=release              ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then qmake SmartHHC.pro -spec linux-g++ CONFIG+=release PREFIX=/usr ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make -j$(nproc)                                                ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make INSTALL_ROOT=SmartHHC install                             ; fi
 
 after_success:
 - chmod +x ./deploy/deploy.sh
@@ -26,13 +35,7 @@ deploy:
   provider: releases
   api_key:
     secure: EgJEc+oJls74TNu1g3KG1BCBnwr5Vyrfk5lG7cy2SiMlztFaVQmRistgAWdWnsWI3umH/Yr4ySLtD8DDFZoUUtLEshGfyZkxI0vF8pFnalBEpVxqHIf8oiZKA0KtK0Az4jk3INftgHz6ItgsXoSlG3eFovWQ3xsdQIFPWLbM6D3Mtmw9sQIrzmdRyOwv63Z+knr2ENK7jsXorbJ6Patekg3WmqHNOclzBJqbWyEyCNwkB86vrfhT7mL+v0/OdCu8cNPfhiCxwaJpTxUxeibXxUFZwzTb8AZdIpAZ7Oc2gPlXYPg01h5Bp30zHduZWvOt98zSKiXw6Cc7zlgFAyWzNDjdW80WbqmAP50DsPYWPnsrKPOoTGfwym8IwX+QsmoqXxxDlNNgqWLoeAySWVNUEGe+N8YftpbxUNQ3xz5i9mG8nN+fQHtl+wLtnJOFKdeXeQH6Ho6xKA3j9Tyo7RypUgfiWFv2QWXRcVy3nMIuMQKcFSZ7SzfVi4Z9oBB+PDtSGxNCwlOzF18p/MV9MRHgFF5cvYfZDEdifTyEukQkUf3dm4vATrEiRpUH9jZ9IXXuXYFpnMutxJCRnfkkzFfpzE/lpBjo1AlSJ8Sh3JHvAE4p3oGSaLGlnpQEeV0/q8SzTZWrjaHX1D1ELRVNa1xNTtI0DzOB6cBHdxp5XlbJhuc=
-
-  file: ${DEPLOYFILE}
+  file: $DEPLOYFILE
   on:
     repo: azdrums/smarthhc
-
-tags: true
-
-branches:
-  except:
-  - /^untagged/
+    tags: true
