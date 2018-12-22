@@ -10,21 +10,21 @@ matrix:
       osx_image: xcode10.1
 
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                                   ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt-5.11.2-xenial -y ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq                                     ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                                   ; fi
 
 install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5                                                    ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew link --force qt5                                               ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -y install libgl1-mesa-dev qt511base qt511serialport ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source /opt/qt*/bin/qt*-env.sh                                    ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5                                                    ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew link --force qt5                                               ; fi
 
 script:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then qmake SmartHHC.pro -spec macx-xcode CONFIG+=release              ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then qmake SmartHHC.pro -spec linux-g++ CONFIG+=release PREFIX=/usr ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make -j$(nproc)                                                ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make INSTALL_ROOT=SmartHHC install                             ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then qmake SmartHHC.pro -spec linux-g++ CONFIG+=release PREFIX=/usr       ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then qmake SmartHHC.pro -spec macx-xcode CONFIG+=release LIBS+= -dead_strip ; fi
+make -j$(nproc)
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make INSTALL_ROOT=SmartHHC install                                   ; fi
 
 after_success:
 - chmod +x ./deploy/deploy.sh

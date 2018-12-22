@@ -100,3 +100,7 @@ linux:!android {
 
     INSTALLS += desktop icon translations target
 }
+mac {
+    CONFIG += app_bundle
+    ICON    = deploy/bundle/osx/icon.icns
+}

@@ -3,7 +3,7 @@
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 #   TODO: Add MacOS deployment
 #   sudo chmod +x ./tools/macdeployqt.app/Contents/MacOS/macdeployqt
-#   sudo ./tools/macdeployqt.app/Contents/MacOS/macdeployqt src/SmartHHC.app -dmg
+#   sudo ./tools/macdeployqt.app/Contents/MacOS/macdeployqt src/SmartHHC.app -dmg -no-plugins -no-strip -verbose=2
 #   user=$(id -nu)
 #   sudo chown ${user} src/SmartHHC.dmg
 #   mv src/SmartHHC.dmg .
