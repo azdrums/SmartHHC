@@ -16,8 +16,6 @@ script:
 - qmake SmartHHC.pro -spec linux-g++ CONFIG+=release PREFIX=/usr
 - make -j$(nproc)
 - make INSTALL_ROOT=SmartHHC install
-
-after_success:
 - chmod +x ./deploy/deploy.sh
 - source ./deploy/deploy.sh
 
