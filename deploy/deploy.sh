@@ -7,7 +7,7 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 #   user=$(id -nu)
 #   sudo chown ${user} src/SmartHHC.dmg
 #   mv src/SmartHHC.dmg .
-#   export DEPLOYFILE=SmartHHC.dmg
+    export DEPLOYFILE=SmartHHC.dmg
 else
 #   linuxdeployqt uses this for naming the file
     export VERSION=$(git rev-parse --short HEAD)
