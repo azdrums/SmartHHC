@@ -24,8 +24,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then qmake SmartHHC.pro -spec linux-g++ CONFIG+=release PREFIX=/usr ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make -j$(nproc)                                                ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make INSTALL_ROOT=SmartHHC install                             ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then qmake SmartHHC.pro -spec macx-g++ CONFIG+=release                ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make -j$(sysctl -n hw.physicalcpu)                               ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then qmake SmartHHC.pro -spec macx-xcode CONFIG+=release              ; fi
 
 after_success:
 - chmod +x ./deploy/deploy.sh
