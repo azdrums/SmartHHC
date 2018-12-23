@@ -15,7 +15,7 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                                   ; fi
 
 install:
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -y install libgl1-mesa-dev qt511base qt511serialport ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -y install libgl1-mesa-dev qt510base qt510serialport ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source /opt/qt*/bin/qt*-env.sh                                    ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5                                                    ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew link --force qt5                                               ; fi
