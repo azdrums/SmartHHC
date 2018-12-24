@@ -50,7 +50,7 @@ deploy:
     # Deploy to GitHub Releases
   - provider: GitHub
     auth_token:
-      secure: UrNRUBA5RuTs/NBGVDo78EQ+ToG6bcfJX/6rgkYbsu/iVG2HzSFjJnHUxikyIIi4
+      secure: +nxqTDAF9LDID9rkvCzMKlSNMqbKWOgHEaEWu9/TqgYAPNrJorFoF/wbNAecmOzK
     artifact: Output\SmartHHC.exe
     draft: false
     prerelease: false
