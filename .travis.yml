@@ -27,8 +27,8 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then qmake SmartHHC.pro -spec macx-xcode CONFIG+=release              ; fi
 
 after_success:
-- chmod +x ./deploy/deploy.sh
-- source ./deploy/deploy.sh
+- chmod +x ./deploy/travis.sh
+- source ./deploy/travis.sh
 
 deploy:
   skip_cleanup: true

@@ -1,0 +1,56 @@
+# Start builds on tags only (GitHub and BitBucket)
+skip_non_tags: true
+
+# Do not build feature branch with open Pull Requests
+skip_branch_with_pr: true
+
+# Build worker image (VM template)
+image: Visual Studio 2017
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+
+matrix:
+  fast_finish: true # set this flag to immediately finish build once one of the jobs fails.
+  allow_failures:
+    - platform: x64
+      configuration: Release
+
+# exclude configuration from the matrix. Works similarly to 'allow_failures' but build not even being started for excluded combination.
+  exclude:
+    - platform: x86
+      configuration: Debug
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: x64
+
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
+install:
+  - set QTDIR=C:\Qt\5.11.2\msvc2017_64
+  - choco install -y InnoSetup
+  - set PATH=%QTDIR%\bin;C:\Qt\Tools\QTCreator\bin;%PATH%;"C:\Program Files (x86)\Inno Setup 5"
+
+build_script:
+  - qmake SmartHHC.pro -spec win32-msvc CONFIG+=release
+  - jom.exe
+
+after_build:
+  - cmd: mkdir Deployment
+  - cmd: cp LICENSE Deployment\LICENSE.txt"
+  - cmd: cp release\smarthhc.exe Deployment\
+  - windeployqt Deployment/smarthhc.exe --release
+  - iscc innosetup.iss
+
+deploy:
+    # Deploy to GitHub Releases
+  - provider: GitHub
+    artifact: Output\SmartHHC-x64.exe
+    draft: false
+    prerelease: false
+    on:
+      branch: master          # release from master branch only
+      APPVEYOR_REPO_TAG: true # deploy on tag push only

@@ -14,6 +14,10 @@
 #include <QSerialPort>
 
 #include "device.h"
+
+#ifdef Q_OS_WIN
+    #pragma warning(disable : 4995)
+#endif
 /**
  * @brief Application specific namespace.
  */

@@ -2,6 +2,8 @@
 /aur/src/
 /build/
 /docs/
+/Deployment/
+/Output/
 *.autosave
 *.o
 *.json

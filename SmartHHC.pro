@@ -79,13 +79,13 @@ linux:android {
 
     HEADERS += src/bluetooth.h
     SOURCES += src/bluetooth.cpp
-}
-linux:!android {
+} else {
     QT += serialport
 
     HEADERS += src/serial.h
     SOURCES += src/serial.cpp
-
+}
+linux:!android {
     desktop.path = /usr/share/applications/
     desktop.files = deploy/bundle/linux/smarthhc.desktop
 
@@ -99,6 +99,9 @@ linux:!android {
     target.path = /usr/bin
 
     INSTALLS += desktop icon translations target
+}
+win32 {
+    RC_FILE = deploy/bundle/windows/icon.rc
 }
 mac {
     CONFIG += app_bundle
