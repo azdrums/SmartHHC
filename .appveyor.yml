@@ -40,7 +40,7 @@ build_script:
 
 after_build:
   - cmd: mkdir Deployment
-  - cmd: cp LICENSE Deployment\LICENSE.txt"
+  - cmd: cp LICENSE Deployment\LICENSE.txt
   - cmd: cp release\smarthhc.exe Deployment\
   - windeployqt Deployment/smarthhc.exe --release
   - iscc innosetup.iss
