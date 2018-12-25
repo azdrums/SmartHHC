@@ -55,7 +55,7 @@ deploy:
   - provider: GitHub
     auth_token:
       secure: +nxqTDAF9LDID9rkvCzMKlSNMqbKWOgHEaEWu9/TqgYAPNrJorFoF/wbNAecmOzK
-    artifact: /SmartHHC*\.exe/
+    artifact: Installer
     draft: false
     prerelease: false
     force_update: true
