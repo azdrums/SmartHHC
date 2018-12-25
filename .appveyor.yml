@@ -44,14 +44,14 @@ after_build:
   - cmd: cp release\smarthhc.exe Deployment\
   - windeployqt Deployment/smarthhc.exe --release
   - iscc innosetup.iss
-# - cmd: ren Output\SmartHHC.exe SmartHHC-%APPVEYOR_REPO_TAG_NAME%-x86_64.exe
+  - cmd: rename "Output\SmartHHC.exe" "SmartHHC-%APPVEYOR_REPO_TAG_NAME%-x86_64.exe"
 
 deploy:
     # Deploy to GitHub Releases
   - provider: GitHub
     auth_token:
       secure: +nxqTDAF9LDID9rkvCzMKlSNMqbKWOgHEaEWu9/TqgYAPNrJorFoF/wbNAecmOzK
-    artifact: Output\SmartHHC.exe
+    artifact: Output\SmartHHC-%APPVEYOR_REPO_TAG_NAME%-x86_64.exe
     draft: false
     prerelease: false
     on:
