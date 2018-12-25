@@ -54,5 +54,6 @@ deploy:
     artifact: Output\SmartHHC-$(APPVEYOR_REPO_TAG_NAME)-x64.exe
     draft: false
     prerelease: false
+    force_update: true
     on:
       APPVEYOR_REPO_TAG: true
