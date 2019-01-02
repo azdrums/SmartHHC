@@ -2,12 +2,8 @@
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 #   TODO: Add MacOS deployment
+    cd ./Release
     macdeployqt SmartHHC.app -dmg -no-plugins -no-strip -verbose=2
-#   sudo chmod +x ./tools/macdeployqt.app/Contents/MacOS/macdeployqt
-#   sudo ./tools/macdeployqt.app/Contents/MacOS/macdeployqt src/SmartHHC.app -dmg -no-plugins -no-strip -verbose=2
-#   user=$(id -nu)
-#   sudo chown ${user} src/SmartHHC.dmg
-#   mv src/SmartHHC.dmg .
     export DEPLOYFILE=SmartHHC.dmg
 else
 #   linuxdeployqt uses this for naming the file
