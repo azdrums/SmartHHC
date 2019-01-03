@@ -11,7 +11,6 @@ matrix:
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-trusty -y ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq                                     ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/qt/bin:$PATH"                     ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                                   ; fi
 
 install:
@@ -25,6 +24,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make -j$(nproc)                                                ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make INSTALL_ROOT=SmartHHC install                             ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then qmake SmartHHC.pro -spec macx-clang CONFIG+=release              ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make -j$(sysctl -n hw.physicalcpu)                               ; fi
 
 after_success:
 - chmod +x ./deploy/travis.sh
