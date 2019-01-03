@@ -5,8 +5,8 @@ export VERSION=$(git describe --tags)
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     macdeployqt smarthhc.app -dmg -verbose=2
-    mv smarthhc.dmg SmartHHC-$VERSION.dmg
-    export DEPLOYFILE=SmartHHC-$VERSION.dmg
+#   mv smarthhc.dmg SmartHHC-$VERSION.dmg
+    export DEPLOYFILE=smarthhc.dmg
 else
     wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
     chmod a+x linuxdeployqt-continuous-x86_64.AppImage
