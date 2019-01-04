@@ -34,7 +34,7 @@ after_success:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DEPLOYFILE=SmartHHC-$VERSION-x86_64.AppImage ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then macdeployqt smarthhc.app -dmg -verbose=2  ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv ./smarthhc.dmg ./SmartHHC-$VERSION.dmg ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export DEPLOYFILE=smarthhc.dmg            ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export DEPLOYFILE=SmartHHC-$VERSION.dmg   ; fi
 
 deploy:
   skip_cleanup: true
