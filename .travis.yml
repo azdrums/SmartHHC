@@ -27,8 +27,14 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make -j$(sysctl -n hw.physicalcpu)                               ; fi
 
 after_success:
-- chmod +x ./deploy/travis.sh
-- source ./deploy/travis.sh
+- export VERSION=$(git describe --tags)
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then chmod a+x linuxdeployqt-continuous-x86_64.AppImage ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./linuxdeployqt-continuous-x86_64.AppImage SmartHHC/usr/share/applications/*.desktop -appimage -no-plugins -no-strip -verbose=2 ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DEPLOYFILE=SmartHHC-$VERSION-x86_64.AppImage ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then macdeployqt smarthhc.app -dmg -verbose=2  ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv ./smarthhc.dmg ./SmartHHC-$VERSION.dmg ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export DEPLOYFILE=smarthhc.dmg            ; fi
 
 deploy:
   skip_cleanup: true
