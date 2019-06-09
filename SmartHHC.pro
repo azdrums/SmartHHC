@@ -3,7 +3,6 @@
 # Project created by QtCreator 2018-11-21T15:58:47
 #
 #-------------------------------------------------
-
 QT += core
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
