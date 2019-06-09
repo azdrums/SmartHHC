@@ -30,7 +30,7 @@ platform: x64
 configuration: Release
 
 install:
-  - set QTDIR=C:\Qt\5.11.2\msvc2017_64
+  - set QTDIR=C:\Qt\5.12.2\msvc2017_64
   - choco install -y InnoSetup
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\QTCreator\bin;%PATH%;"C:\Program Files (x86)\Inno Setup 5"
 
