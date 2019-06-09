@@ -15,4 +15,7 @@ Check [this Wiki](https://github.com/redtide/QTips/wiki).
 Use the [Gitlab Issues Tracker](https://gitlab.com/azdrums/smarthhc/smarthhc/issues)
 
 ### TODO
-* Fix macOS X build.
+
+- Fix the CurveWidget code.
+- Fix macOS X build.
+- Check Android build and create a package.
