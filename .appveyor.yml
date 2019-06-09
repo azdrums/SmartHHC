@@ -51,10 +51,11 @@ artifacts:
     path: 'SmartHHC*.exe'
 
 deploy:
-    # Deploy to GitHub Releases
+  # Deploy to GitHub Releases
+  # See https://www.appveyor.com/docs/deployment/github/
   - provider: GitHub
     auth_token:
-      secure: +nxqTDAF9LDID9rkvCzMKlSNMqbKWOgHEaEWu9/TqgYAPNrJorFoF/wbNAecmOzK
+      secure: F0hK0o5SHzUO/tlk1qMiVCbeZtNPUZzfhOw8YEfTs/72AIaWCUo9J4zptDYE2Z7F
     artifact: Installer
     draft: false
     prerelease: false
