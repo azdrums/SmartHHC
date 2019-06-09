@@ -1,7 +1,7 @@
 # SmartHHC
 
-[![Travis Build Status](https://travis-ci.com/azdrums/smarthhc.svg?branch=master)](https://travis-ci.com/azdrums/smarthhc)
-[![Build status](https://ci.appveyor.com/api/projects/status/5i1oyacolp0ft5rf/branch/master?svg=true)](https://ci.appveyor.com/project/redtide/smarthhc/branch/master)
+[![Travis](https://img.shields.io/travis/com/azdrums/smarthhc.svg?label=Linux-macOS&style=popout&logo=travis)](https://travis-ci.com/azdrums/smarthhc)
+[![AppVeyor](https://img.shields.io/appveyor/ci/redtide/smarthhc.svg?label=Windows&style=popout&logo=appveyor)](https://ci.appveyor.com/project/redtide/smarthhc)
 
 A digital hihat controller to connect to Roland and ATV drum modules.
 
