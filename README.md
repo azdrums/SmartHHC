@@ -6,16 +6,3 @@
 A digital hihat controller to connect to Roland and ATV drum modules.
 
 ***This is alpha-stage software and not fully functional yet.***
-
-### QtCreator Configuration
-
-Check [this Wiki](https://github.com/redtide/QTips/wiki).
-
-### Report Bugs
-Use the [Gitlab Issues Tracker](https://gitlab.com/azdrums/smarthhc/smarthhc/issues)
-
-### TODO
-
-- Fix the CurveWidget code.
-- Fix macOS X build.
-- Check Android build and create a package.
