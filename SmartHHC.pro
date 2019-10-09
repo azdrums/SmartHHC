@@ -10,7 +10,6 @@ CONFIG  += c++11 # mobility
 TARGET   = smarthhc
 TEMPLATE = app
 # MOBILITY =
-
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -85,17 +84,17 @@ linux:android {
     SOURCES += src/serial.cpp
 }
 linux:!android {
-    desktop.path = /usr/share/applications/
-    desktop.files = deploy/bundle/linux/smarthhc.desktop
+    desktop.path  = /usr/share/applications/
+    desktop.files = deploy/bundle/linux/$${TARGET}.desktop
 
-    icon.path = /usr/share/$${TARGET}/icons/
+    icon.path  = /usr/share/$${TARGET}/icons/
     icon.files = resources/icons/icon.png
 
-    translations.path = /usr/share/$${TARGET}/translations/
+    translations.path  = /usr/share/$${TARGET}/translations/
     translations.files = resources/translations/*.qm
 
     target.files = $${TARGET}
-    target.path = /usr/bin
+    target.path  = /usr/bin
 
     INSTALLS += desktop icon translations target
 }
