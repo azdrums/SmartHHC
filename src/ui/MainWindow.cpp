@@ -91,9 +91,9 @@ MainWindow::MainWindow() : QMainWindow(),
 //  actBar->addAction(actConn);
     actBar->addAction(actConn, Action::Normal);
     actBar->addAction(actScan, Action::Normal);
-    actBar->addAction(actLoad, Action::Navigation);
-    actBar->addAction(actSave, Action::Navigation);
-    actBar->addAction(actSvAs, Action::Navigation);
+	actBar->addAction(actLoad, Action::Normal);
+	actBar->addAction(actSave, Action::Normal);
+	actBar->addAction(actSvAs, Action::Normal);
     actBar->addAction(actQuit, Action::Navigation);
     actBar->addAction(actInfo, Action::OverflowOnly, Action::Other);
     actBar->setAppIcon(QIcon(":/icons/hi-hat.png"));
