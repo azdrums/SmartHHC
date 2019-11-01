@@ -18,13 +18,15 @@ matrix:
         sources:
         - sourceline: "ppa:beineri/opt-qt-5.10.1-trusty"
         packages:
-        - g++-9
         - qt510base
         - qt510serialport
         - qt5-default
         - mesa-common-dev
     env:
       - PROJECT_NAME="SmartHHC"
+
+before_install:
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 
 install:
 - bash ${TRAVIS_BUILD_DIR}/.travis/install.sh
