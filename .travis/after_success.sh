@@ -8,9 +8,9 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   ./linuxdeployqt-continuous-x86_64.AppImage ${PROJECT_NAME}/usr/share/applications/*.desktop -appimage -no-plugins -no-strip -verbose=2
   export DEPLOYFILE=${PROJECT_NAME}-${VERSION}-x86_64.AppImage
 elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-  macdeployqt smarthhc.app -dmg -verbose=2
-  mv ./smarthhc.dmg ./SmartHHC-$VERSION.dmg
-  export DEPLOYFILE=SmartHHC-$VERSION.dmg
+  macdeployqt ${PROJECT_TARGET}.app -dmg -verbose=2
+  mv ./${PROJECT_TARGET}.dmg ./${PROJECT_NAME}-${VERSION}.dmg
+  export DEPLOYFILE=${PROJECT_NAME}-${VERSION}.dmg
 fi
 
 # Travis Webhook

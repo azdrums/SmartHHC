@@ -3,6 +3,7 @@ language: cpp
 env:
   global:
   - PROJECT_NAME="SmartHHC"
+  - PROJECT_TARGET="smarthhc"
 
 matrix:
   include:
