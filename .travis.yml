@@ -9,6 +9,7 @@ matrix:
       homebrew:
         packages:
         - qt5
+        update: true
 
   - os: linux
     dist: trusty
@@ -24,9 +25,6 @@ matrix:
         - mesa-common-dev
     env:
       - PROJECT_NAME="SmartHHC"
-
-before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 
 install:
 - bash ${TRAVIS_BUILD_DIR}/.travis/install.sh
