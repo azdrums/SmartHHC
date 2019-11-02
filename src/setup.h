@@ -1,10 +1,7 @@
-#ifndef SETUP_H
-#define SETUP_H
-
+#pragma once
 #include <QString>
 
 namespace hhc
 {
-    const QString NamePrefix = "SmartHHC";
+	const QString NamePrefix = "SmartHHC";
 }
-#endif // SETUP_H

@@ -1,22 +1,20 @@
 /*
-    SmartHHC - Electronic Drums HiHat Controller Manager
-    Copyright (C) 2018 Andrea Zanellato
+	SmartHHC - Electronic Drums HiHat Controller Manager
+	Copyright (C) 2018 Andrea Zanellato
 
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#ifndef UICONNECTION_H
-#define UICONNECTION_H
-
+#pragma once
 #include <QVector>
 #include <QWidget>
 
 enum ConnectionType
 {
-    Unknown = 0,
-    Serial,
-    Bluetooth
+	Unknown = 0,
+	Serial,
+	Bluetooth
 };
 namespace Ui {
 class PageConnection;
@@ -26,68 +24,67 @@ class QToolButton;
 class SpinBox;
 class PageConnection : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit PageConnection(QWidget *parent = nullptr);
-    ~PageConnection();
+	explicit PageConnection(QWidget *parent = nullptr);
+	~PageConnection();
 
-    void setConnected(bool);
-    void showScanInProgress();
+	void setConnected(bool);
+	void showScanInProgress();
 
-    void setInterval(int);
-    void setOldInterval(int);
-    void setIntervalChanged(bool);
+	void setInterval(int);
+	void setOldInterval(int);
+	void setIntervalChanged(bool);
 
-    int  interval() const;
+	int  interval() const;
 
-    void onIntervalChanged(int);
+	void onIntervalChanged(int);
 
 #ifndef Q_OS_ANDROID
-    ConnectionType connectionType() const;
-    QString        serialPortName() const;
-    int            serialPortCount() const;
+	ConnectionType connectionType() const;
+	QString		serialPortName() const;
+	int			serialPortCount() const;
 
-    void addSerialPort(const QString &, const QStringList &);
-    void showSerialPortOptions();
-    void resetSerialPortInfos();
-    void setSerialPortCurrentIndex(int);
+	void addSerialPort(const QString &, const QStringList &);
+	void showSerialPortOptions();
+	void resetSerialPortInfos();
+	void setSerialPortCurrentIndex(int);
 
-    void onSerialPortCurrentIndexChanged(int);
+	void onSerialPortCurrentIndexChanged(int);
 #endif
-    void showNotFound();
+	void showNotFound();
 
 #ifdef Q_OS_ANDROID
-    QString bluetoothAddress() const;
-    void addBluetoothDevice(const QString &, const QString &);
-    void showBluetoothDeviceOptions();
-    void setBluetoothDeviceCurrentIndex(int);
-    void updateBluetoothDeviceScanProgress(const QString &);
-    void bluetoothDeviceScanFinished();
-    void updateBluetoothServiceScanProgress(const QString &);
-    void bluetoothServiceScanFinished();
+	QString bluetoothAddress() const;
+	void addBluetoothDevice(const QString &, const QString &);
+	void showBluetoothDeviceOptions();
+	void setBluetoothDeviceCurrentIndex(int);
+	void updateBluetoothDeviceScanProgress(const QString &);
+	void bluetoothDeviceScanFinished();
+	void updateBluetoothServiceScanProgress(const QString &);
+	void bluetoothServiceScanFinished();
 
-    int bluetoothDeviceCount();
+	int bluetoothDeviceCount();
 
-    void onBluetoothDeviceCurrentIndexChanged(int);
+	void onBluetoothDeviceCurrentIndexChanged(int);
 #endif
 
 signals:
 #ifndef Q_OS_ANDROID
-    void sigSerialPortIndexChanged(int);
-    void sigSerialPortIndexChanged(const QString &);
+	void sigSerialPortIndexChanged(int);
+	void sigSerialPortIndexChanged(const QString &);
 #else
-    void sigBluetoothDeviceIndexChanged(int);
-    void sigBluetoothDeviceIndexChanged(const QString &);
+	void sigBluetoothDeviceIndexChanged(int);
+	void sigBluetoothDeviceIndexChanged(const QString &);
 #endif
-    void sigIntervalChanged(int);
-    void sigSettingInterval();
+	void sigIntervalChanged(int);
+	void sigSettingInterval();
 
-    void sigRestart();
+	void sigRestart();
 
 private:
-    Ui::PageConnection *ui;
+	Ui::PageConnection *ui;
 
-    int oldIntervalValue = 0; // Cache old interval value.
+	int oldIntervalValue = 0; // Cache old interval value.
 };
-#endif // UICONNECTION_H

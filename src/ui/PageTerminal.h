@@ -1,14 +1,12 @@
 /*
-    SmartHHC - Electronic Drums HiHat Controller Manager
-    Copyright (C) 2018 Andrea Zanellato
+	SmartHHC - Electronic Drums HiHat Controller Manager
+	Copyright (C) 2018 Andrea Zanellato
 
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#ifndef UITERMINAL_H
-#define UITERMINAL_H
-
+#pragma once
 #include <QWidget>
 
 namespace Ui {
@@ -17,27 +15,26 @@ class PageTerminal;
 class QLineEdit;
 class PageTerminal : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit PageTerminal(QWidget *parent = nullptr);
-    ~PageTerminal();
+	explicit PageTerminal(QWidget *parent = nullptr);
+	~PageTerminal();
 
-    void setConnected(bool);
+	void setConnected(bool);
 
-    void write(const QString &);
-    void clear();
-    void setFocusCLI();
-    void scrollDown();
+	void write(const QString &);
+	void clear();
+	void setFocusCLI();
+	void scrollDown();
 
-    QLineEdit *txtCLI() const;
+	QLineEdit *txtCLI() const;
 
 signals:
-    void onGetData(const QByteArray &);
+	void onGetData(const QByteArray &);
 
 private:
-    bool eventFilter(QObject *, QEvent *);
+	bool eventFilter(QObject *, QEvent *);
 
-    Ui::PageTerminal *ui;
+	Ui::PageTerminal *ui;
 };
-#endif // UITERMINAL_H

@@ -1,16 +1,14 @@
 /*
-    SmartHHC - Electronic Drums HiHat Controller Manager
-    Copyright (C) 2018 Andrea Zanellato
+	SmartHHC - Electronic Drums HiHat Controller Manager
+	Copyright (C) 2018 Andrea Zanellato
 
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include <QtGlobal>
 #ifdef  Q_OS_ANDROID
-#ifndef BLUETOOTH_H
-#define BLUETOOTH_H
-
+#pragma once
 #include <QBluetoothServiceInfo>
 #include <QBluetoothSocket>
 #include <QVector>
@@ -24,37 +22,35 @@ class QBluetoothServiceDiscoveryAgent;
 namespace hhc {
 class bluetooth : public device
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit bluetooth(QObject *parent = nullptr);
-    ~bluetooth() {}
+	explicit bluetooth(QObject *parent = nullptr);
+	~bluetooth() {}
 
-    bool open(const QString &addressString = QString());
-    Type type() const {return Type::Bluetooth;}
-    void scan();
+	bool open(const QString &addressString = QString());
+	Type type() const {return Type::Bluetooth;}
+	void scan();
 
 signals:
-    void sigDeviceDiscovered(const QStringList &);
-    void sigDeviceScanFinished();
+	void sigDeviceDiscovered(const QStringList &);
+	void sigDeviceScanFinished();
 
-    void sigServiceDiscovered(const QStringList &);
-    void sigServiceScanFinished();
+	void sigServiceDiscovered(const QStringList &);
+	void sigServiceScanFinished();
 
 private:
-    void onDeviceDiscovered(const QBluetoothDeviceInfo &);
-    void onDeviceScanFinished();
-    void onStateChanged(QBluetoothSocket::SocketState);
+	void onDeviceDiscovered(const QBluetoothDeviceInfo &);
+	void onDeviceScanFinished();
+	void onStateChanged(QBluetoothSocket::SocketState);
 
-    void onServiceDiscovered(const QBluetoothServiceInfo &);
-    void onServiceScanFinished();
+	void onServiceDiscovered(const QBluetoothServiceInfo &);
+	void onServiceScanFinished();
 
-    QVector<QBluetoothServiceInfo>  services;
+	QVector<QBluetoothServiceInfo>  services;
 
-    QBluetoothDeviceDiscoveryAgent  *devDiscoveryAgent;
-    QBluetoothServiceDiscoveryAgent *svcDiscoveryAgent;
+	QBluetoothDeviceDiscoveryAgent  *devDiscoveryAgent;
+	QBluetoothServiceDiscoveryAgent *svcDiscoveryAgent;
 };
 } // namespace hhc
-
-#endif // BLUETOOTH_H
 #endif // def Q_OS_ANDROID
