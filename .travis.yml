@@ -28,6 +28,7 @@ matrix:
         - qt510serialport
         - qt5-default
         - mesa-common-dev
+        update: true
 install:
 - bash ${TRAVIS_BUILD_DIR}/.travis/install.sh
 
