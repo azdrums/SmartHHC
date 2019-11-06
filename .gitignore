@@ -18,3 +18,9 @@ qrc_*
 ui_*
 *~
 .qmake.stash
+.website*
+Gemfile.lock
+_site/
+assets/
+node_modules/
+yarn.lock
