@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-  sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
+# sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
   ${SHELL} --version && gcc -v && qmake -v
 
   qmake ${PROJECT_NAME}.pro -spec linux-g++ CONFIG+=release PREFIX=/usr

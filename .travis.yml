@@ -8,22 +8,8 @@ env:
 matrix:
   include:
   - os: linux
-    dist: trusty
+    dist: bionic
     compiler: gcc
-    env:
-    - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
-    addons:
-      apt:
-        sources:
-        - sourceline: "ppa:ubuntu-toolchain-r/test"
-#       - sourceline: "ppa:beineri/opt-qt-5.10.1-trusty"
-        packages:
-        - g++-9
-#       - qt5-default
-#       - qt510base
-#       - qt510serialport <-- Bug? This will be installed but not found
-#       - mesa-common-dev
-        update: true
 #
 # - os: osx
 #   osx_image: xcode9.4
@@ -34,12 +20,6 @@ matrix:
 #       - qt5
 #       update: true
 
-before_install:
-- bash ${TRAVIS_BUILD_DIR}/.travis/before_install.sh
-
-install:
-- bash ${TRAVIS_BUILD_DIR}/.travis/install.sh
-
 script:
 - bash ${TRAVIS_BUILD_DIR}/.travis/script.sh
 
@@ -49,12 +29,12 @@ after_failure:
 after_success:
 - bash ${TRAVIS_BUILD_DIR}/.travis/after_success.sh
 
-deploy:
-  skip_cleanup: true
-  provider: releases
-  api_key:
-    secure: EgJEc+oJls74TNu1g3KG1BCBnwr5Vyrfk5lG7cy2SiMlztFaVQmRistgAWdWnsWI3umH/Yr4ySLtD8DDFZoUUtLEshGfyZkxI0vF8pFnalBEpVxqHIf8oiZKA0KtK0Az4jk3INftgHz6ItgsXoSlG3eFovWQ3xsdQIFPWLbM6D3Mtmw9sQIrzmdRyOwv63Z+knr2ENK7jsXorbJ6Patekg3WmqHNOclzBJqbWyEyCNwkB86vrfhT7mL+v0/OdCu8cNPfhiCxwaJpTxUxeibXxUFZwzTb8AZdIpAZ7Oc2gPlXYPg01h5Bp30zHduZWvOt98zSKiXw6Cc7zlgFAyWzNDjdW80WbqmAP50DsPYWPnsrKPOoTGfwym8IwX+QsmoqXxxDlNNgqWLoeAySWVNUEGe+N8YftpbxUNQ3xz5i9mG8nN+fQHtl+wLtnJOFKdeXeQH6Ho6xKA3j9Tyo7RypUgfiWFv2QWXRcVy3nMIuMQKcFSZ7SzfVi4Z9oBB+PDtSGxNCwlOzF18p/MV9MRHgFF5cvYfZDEdifTyEukQkUf3dm4vATrEiRpUH9jZ9IXXuXYFpnMutxJCRnfkkzFfpzE/lpBjo1AlSJ8Sh3JHvAE4p3oGSaLGlnpQEeV0/q8SzTZWrjaHX1D1ELRVNa1xNTtI0DzOB6cBHdxp5XlbJhuc=
-  file: "$DEPLOYFILE"
-  on:
-    repo: azdrums/SmartHHC
-    tags: true
+#deploy:
+#  skip_cleanup: true
+#  provider: releases
+#  api_key:
+#    secure: EgJEc+oJls74TNu1g3KG1BCBnwr5Vyrfk5lG7cy2SiMlztFaVQmRistgAWdWnsWI3umH/Yr4ySLtD8DDFZoUUtLEshGfyZkxI0vF8pFnalBEpVxqHIf8oiZKA0KtK0Az4jk3INftgHz6ItgsXoSlG3eFovWQ3xsdQIFPWLbM6D3Mtmw9sQIrzmdRyOwv63Z+knr2ENK7jsXorbJ6Patekg3WmqHNOclzBJqbWyEyCNwkB86vrfhT7mL+v0/OdCu8cNPfhiCxwaJpTxUxeibXxUFZwzTb8AZdIpAZ7Oc2gPlXYPg01h5Bp30zHduZWvOt98zSKiXw6Cc7zlgFAyWzNDjdW80WbqmAP50DsPYWPnsrKPOoTGfwym8IwX+QsmoqXxxDlNNgqWLoeAySWVNUEGe+N8YftpbxUNQ3xz5i9mG8nN+fQHtl+wLtnJOFKdeXeQH6Ho6xKA3j9Tyo7RypUgfiWFv2QWXRcVy3nMIuMQKcFSZ7SzfVi4Z9oBB+PDtSGxNCwlOzF18p/MV9MRHgFF5cvYfZDEdifTyEukQkUf3dm4vATrEiRpUH9jZ9IXXuXYFpnMutxJCRnfkkzFfpzE/lpBjo1AlSJ8Sh3JHvAE4p3oGSaLGlnpQEeV0/q8SzTZWrjaHX1D1ELRVNa1xNTtI0DzOB6cBHdxp5XlbJhuc=
+#  file: "$DEPLOYFILE"
+#  on:
+#    repo: azdrums/SmartHHC
+#    tags: true
