@@ -6,16 +6,7 @@ env:
   - PROJECT_TARGET="smarthhc"
 
 matrix:
-# include:
-# - os: osx
-#   osx_image: xcode9.4
-#   compiler: clang
-#   addons:
-#     homebrew:
-#       packages:
-#       - qt5
-#       update: true
-
+  include:
   - os: linux
     dist: trusty
     compiler: gcc
@@ -26,8 +17,17 @@ matrix:
 #       packages:
 #       - qt5-default
 #       - qt510base
-#       - qt510serialport
+#       - qt510serialport <-- Bug? This will be installed but not found
 #       - mesa-common-dev
+#       update: true
+#
+# - os: osx
+#   osx_image: xcode9.4
+#   compiler: clang
+#   addons:
+#     homebrew:
+#       packages:
+#       - qt5
 #       update: true
 
 before_install:
