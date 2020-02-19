@@ -15,7 +15,7 @@ void setup() {
   pinMode (MCP_CS, OUTPUT);
   delay(10);
 #if HAVE_SERIAL
-  #if HAVE_BT
+ #if HAVE_BT
   
     Serial.begin(9600); //115200);
     // wait for serial port to open on native usb devices
@@ -28,22 +28,24 @@ void setup() {
       Change speed to 115200:
       AT+UART=115200,0,0
       Change pin:
-      AT+PSWD:"0000"
+      AT+PSWD HC-05 / AT+PIN HC-06??:"0000"
      */
     delay(200);
     Serial.println("AT+NAME:SmartHHC-01");
     delay(50);
     Serial.println("AT+UART=38400,0,0");
     delay(50);
+    Serial.println("AT+PIN:0000");delay(50);Serial.println("AT+PSWD:0000");delay(50);
     Serial.end();
     delay(100);
-  #endif //HAVE_BT    
+ #endif //HAVE_BT      
   Serial.begin(38400);
   while (!Serial) {
     delay(1);
    }
-  //tmp
-  Serial.println("AT+NAME:SmartHHC-01"); delay(50);
+ #if HAVE_BT
+  Serial.println("AT+NAME:SmartHHC-01"); delay(50);Serial.println("AT+PIN:0000");delay(50);Serial.println("AT+PSWD:0000");
+ #endif //HAVE_BT        
   hcInit(); //command protocol module init
 #endif//HAVE_SERIAL
   mcpInitial();
