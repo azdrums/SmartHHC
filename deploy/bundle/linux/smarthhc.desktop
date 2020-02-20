@@ -2,7 +2,8 @@
 Type=Application
 Name=SmartHHC
 GenericName=Electronic Drums HiHat Controller
-Comment=Open-source digital hihat controller
+Comment=Electronic Drums HiHat Controller
 Exec=smarthhc
-Icon=icon
-Categories=Qt;AudioVideo;Audio;Music;Midi;
+Icon=/usr/share/smarthhc/icons/icon.png
+Categories=AudioVideo;Audio;Music;Midi;
+Terminal=false
