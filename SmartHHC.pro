@@ -87,7 +87,7 @@ linux:!android {
     desktop.path  = /usr/share/applications/
     desktop.files = deploy/bundle/linux/$${TARGET}.desktop
 
-    icon.path  = /usr/share/$${TARGET}/icons/
+    icon.path  = /usr/share/pixmaps/
     icon.files = resources/icons/icon.png
 
     translations.path  = /usr/share/$${TARGET}/translations/
