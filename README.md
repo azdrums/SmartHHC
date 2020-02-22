@@ -1,4 +1,4 @@
-# SmartHHC App
+# SmartHHC
 
 [![Travis-CI Build Badge Icon]](https://travis-ci.com/azdrums/smarthhc)
 <!--
