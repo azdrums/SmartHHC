@@ -93,7 +93,7 @@
         </property>
         <layout class="QVBoxLayout" name="layTabTnx">
          <item>
-          <widget class="QTextBrowser" name="textBrowser">
+          <widget class="QTextBrowser" name="txtTnx">
            <property name="source">
             <url>
              <string>qrc:/thanks.html</string>

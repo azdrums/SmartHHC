@@ -145,15 +145,39 @@ Controlla le connessioni e riavvia l&apos;applicazione.
     </message>
     <message>
         <source>qrc:/about.html</source>
-        <translation>qrc:/translations/it/about.html</translation>
+				<translation></translation>
     </message>
     <message>
         <source>qrc:/thanks.html</source>
-        <translation>qrc:/translations/it/thanks.html</translation>
+				<translation></translation>
     </message>
     <message>
         <source>qrc:/license.html</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>SmartHHC Digital HiHat Controller</source>
+        <translation>SmartHHC Controller Charleston Elettronico</translation>
+    </message>
+    <message>
+        <source>All Rights Reserved.</source>
+        <translation>Tutti i diritti riservati.</translation>
+    </message>
+    <message>
+        <source>Hardware Developers</source>
+        <translation>Sviluppatori Hardware</translation>
+    </message>
+    <message>
+        <source>Project Creator, Firmware and Hardware Developer</source>
+        <translation>Creatore Progetto, Sviluppatore Firmware e Hardware</translation>
+    </message>
+    <message>
+        <source>Hardware Developer</source>
+        <translation>Sviluppatore Hardware</translation>
+    </message>
+    <message>
+        <source>Software Developers</source>
+        <translation>Sviluppatori Software</translation>
     </message>
 </context>
 <context>
@@ -227,16 +251,16 @@ Controlla le connessioni e riavvia l&apos;applicazione.
         <translation>Servizi:</translation>
     </message>
     <message>
-        <source>Soft Reset</source>
-        <translation>Reset</translation>
-    </message>
-    <message>
         <source>Scanning...</source>
         <translation>Scansione...</translation>
     </message>
     <message>
         <source>Completed.</source>
         <translation>Completata.</translation>
+    </message>
+    <message>
+        <source>Restart</source>
+        <translation>Riavvia</translation>
     </message>
 </context>
 <context>

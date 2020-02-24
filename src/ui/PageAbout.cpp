@@ -30,6 +30,19 @@ PageAbout::PageAbout(QWidget *parent)
 	ui->tabInfo->setLayout(ui->layTabInfo);
 	ui->tabTnx->setLayout(ui->layTabTnx);
 	ui->tabLicense->setLayout(ui->layTabLicense);
+
+	QString htmlInfo = ui->txtInfo->toHtml();
+	htmlInfo.replace("@TITLE@", tr("SmartHHC Digital HiHat Controller"));
+	htmlInfo.replace("@VERSION@", "0.1.2alpha");
+	htmlInfo.replace("@RESERVED@", tr("All Rights Reserved."));
+	ui->txtInfo->setHtml(htmlInfo);
+
+	QString htmlTnx = ui->txtTnx->toHtml();
+	htmlTnx.replace("@TITLE@", tr("Hardware Developers"));
+	htmlTnx.replace("@AUTHOR@", tr("Project Creator, Firmware and Hardware Developer"));
+	htmlTnx.replace("@AUTHOR2@", tr("Hardware Developer"));
+	htmlTnx.replace("@SOFTWARE_TITLE@", tr("Software Developers"));
+	ui->txtTnx->setHtml(htmlTnx);
 }
 PageAbout::~PageAbout()
 {
