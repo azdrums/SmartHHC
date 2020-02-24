@@ -1,0 +1,4 @@
+# Ignore files from other branches
+
+build*/
+*.pro.user
