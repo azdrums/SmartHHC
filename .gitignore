@@ -1,4 +1,9 @@
 # Ignore files from other branches
-
+_site/
+.bundle/
 build*/
+node_modules/
+Gemfile.lock
+yarn.lock
+*.code-workspace
 *.pro.user
