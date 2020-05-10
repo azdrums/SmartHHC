@@ -18,9 +18,19 @@ qrc_*
 ui_*
 *~
 .qmake.stash
-.website*
+
+# Website ignore files
+/_site/
+/.bundle/
+/.jekyll-cache/
+/.jekyll-metadata/
+/.sass-cache/
+/node_modules/
+/assets/css/*.map
+/assets/css/style.css
+/assets/js/*.map
 Gemfile.lock
-_site/
-assets/
-node_modules/
+package-lock.json
 yarn.lock
+*.code-workspace
+*.log
