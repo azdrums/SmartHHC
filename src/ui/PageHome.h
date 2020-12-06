@@ -19,11 +19,10 @@
 #pragma once
 #include <QWidget>
 
-namespace Ui {
-class PageHome;
-}
+namespace Ui  {class PageHome;}
+namespace qsw {class SpinBox;}
+
 class QToolButton;
-class SpinBox;
 class PageHome : public QWidget
 {
 	Q_OBJECT
@@ -54,11 +53,11 @@ public:
 	QToolButton *tbnSetClosed() const;
 	QToolButton *tbnSetOpen()   const;
 
-	SpinBox *sbxOpen()   const;
-	SpinBox *sbxClosed() const;
-	SpinBox *sbxFixed1() const;
-	SpinBox *sbxFixed2() const;
-	SpinBox *sbxFixed3() const;
+    qsw::SpinBox *sbxOpen()   const;
+    qsw::SpinBox *sbxClosed() const;
+    qsw::SpinBox *sbxFixed1() const;
+    qsw::SpinBox *sbxFixed2() const;
+    qsw::SpinBox *sbxFixed3() const;
 
 	QToolButton *tbnRestore()	 const;
 	QToolButton *tbnSetAsOpen()   const;

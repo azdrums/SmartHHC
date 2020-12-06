@@ -23,7 +23,7 @@
 #include "PageConnection.h"
 #include "ui_PageConnection.h"
 
-#include "spinbox.h"
+#include <qsw/spinbox.h>
 
 PageConnection::PageConnection(QWidget *parent)
 :
@@ -56,7 +56,7 @@ PageConnection::PageConnection(QWidget *parent)
 	connect(ui->cbxPort, QOverload<int>::of(&QComboBox::currentIndexChanged),
 			this, &PageConnection::onSerialPortCurrentIndexChanged);
 #endif
-	connect(ui->sbxInterval, QOverload<int>::of(&SpinBox::valueChanged),
+    connect(ui->sbxInterval, QOverload<int>::of(&qsw::SpinBox::valueChanged),
 			this, &PageConnection::onIntervalChanged);
 
 	connect(ui->tbnInterval, &QToolButton::clicked, [=]()

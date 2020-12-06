@@ -22,7 +22,10 @@
 class QMenu;
 class QToolButton;
 class QHBoxLayout;
+
+namespace qsw {
 class SpinBox;
+}
 class CurveToolBar : public QWidget
 {
 	Q_OBJECT
@@ -82,7 +85,7 @@ public:
 /**
 	Returns the spinbox pointer used for fine setting the curve.
 */
-	SpinBox *spinBox() const;
+    qsw::SpinBox *spinBox() const;
 /**
 	Returns whether curve value changes was applied.
 */
@@ -114,6 +117,6 @@ private:
 	QToolButton *tbnCancel;
 	QToolButton *tbnOk;
 	QToolButton *tbnSave;
-	SpinBox	 *sbx;
+    qsw::SpinBox  *sbx;
 	QMenu	   *mnuDropDown;
 };

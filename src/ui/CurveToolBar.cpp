@@ -21,7 +21,8 @@
 #include <QToolButton>
 
 #include "CurveToolBar.h"
-#include "spinbox.h"
+
+#include <qsw/spinbox.h>
 
 CurveToolBar::CurveToolBar(QWidget *parent)
 :
@@ -31,7 +32,7 @@ CurveToolBar::CurveToolBar(QWidget *parent)
 	tbnCancel(new QToolButton(this)),
 	tbnOk(new QToolButton(this)),
 	tbnSave(new QToolButton(this)),
-	sbx(new SpinBox(this)),
+    sbx(new qsw::SpinBox(this)),
 	mnuDropDown(new QMenu(tbnSlot))
 {
 	layout->setObjectName("layout");
@@ -115,7 +116,7 @@ CurveToolBar::CurveToolBar(QWidget *parent)
 	connect(tbnCancel,  &QToolButton::clicked, this, &CurveToolBar::onCancelClicked);
 	connect(tbnSave,	&QToolButton::clicked, this, &CurveToolBar::onSaveClicked);
 
-	connect(sbx, &SpinBox::valueChanged, [=](int)
+    connect(sbx, &qsw::SpinBox::valueChanged, [=](int)
 	{
 		if (!isSetupChanged())
 			setSetupChanged(true);
@@ -178,7 +179,7 @@ QMenu *CurveToolBar::dropDownMenu() const
 {
 	return mnuDropDown;
 }
-SpinBox *CurveToolBar::spinBox() const
+qsw::SpinBox *CurveToolBar::spinBox() const
 {
 	return sbx;
 }

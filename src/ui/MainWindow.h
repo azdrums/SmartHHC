@@ -30,10 +30,12 @@ class device;
 #endif
 class settings;
 }
-class QStackedWidget;
-class QVBoxLayout;
+namespace qsw {
 class ActionBar;
 class TabLayout;
+}
+class QStackedWidget;
+class QVBoxLayout;
 class CurveEditor;
 class PageHome;
 class PageConnection;
@@ -135,8 +137,9 @@ private:
 	QWidget        *wgtMain;
 	QVBoxLayout    *layout;
 	QStackedWidget *stkMain;
-	TabLayout      *tloMain;
-	ActionBar      *actBar;
+
+    qsw::TabLayout *tloMain;
+    qsw::ActionBar *actBar;
 
 	QAction *actConn;
 	QAction *actScan;

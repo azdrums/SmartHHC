@@ -68,7 +68,7 @@
            <number>12</number>
           </property>
           <item row="3" column="1">
-           <widget class="SpinBox" name="sbxFixed2">
+           <widget class="qsw::SpinBox" name="sbxFixed2">
             <property name="maximum">
              <number>127</number>
             </property>
@@ -82,7 +82,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="SpinBox" name="sbxFixed3">
+           <widget class="qsw::SpinBox" name="sbxFixed3">
             <property name="maximum">
              <number>127</number>
             </property>
@@ -157,14 +157,14 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="SpinBox" name="sbxFixed1">
+           <widget class="qsw::SpinBox" name="sbxFixed1">
             <property name="maximum">
              <number>127</number>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="SpinBox" name="sbxOpen">
+           <widget class="qsw::SpinBox" name="sbxOpen">
             <property name="maximum">
              <number>1023</number>
             </property>
@@ -191,7 +191,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="SpinBox" name="sbxClosed">
+           <widget class="qsw::SpinBox" name="sbxClosed">
             <property name="maximum">
              <number>1023</number>
             </property>
@@ -478,7 +478,7 @@
        <number>12</number>
       </property>
       <item>
-       <widget class="LevelBar" name="pbrHHLevel">
+       <widget class="qsw::LevelBar" name="pbrHHLevel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -509,14 +509,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SpinBox</class>
+   <class>qsw::SpinBox</class>
    <extends>QSpinBox</extends>
-   <header>spinbox.h</header>
+   <header>qsw/spinbox.h</header>
   </customwidget>
   <customwidget>
-   <class>LevelBar</class>
+   <class>qsw::LevelBar</class>
    <extends>QProgressBar</extends>
-   <header>levelbar.h</header>
+   <header>qsw/levelbar.h</header>
   </customwidget>
  </customwidgets>
  <resources>

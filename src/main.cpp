@@ -19,16 +19,12 @@
 #include <QApplication>
 #include <QTranslator>
 
-//#include "actionbar.h"
-#include "MainWindow.h"
+#include "ui/MainWindow.h"
 
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
-/*
-//  TODO: Fix library issue on Android
-	ActionBar::initResources();
-*/
+
 	// Set application data also for settings
 	app.setOrganizationName("AZDrums");
 	app.setOrganizationDomain("azdrums.org");

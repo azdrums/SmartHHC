@@ -24,7 +24,7 @@
 	#include <QBluetoothSocket>
 	#include <QBluetoothServiceInfo>
 #else
-	#include <QSerialPort>
+    #include <QtSerialPort/QSerialPort>
 #endif
 
 #include "device.h"

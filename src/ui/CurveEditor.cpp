@@ -24,7 +24,8 @@
 #include "CurvePage.h"
 #include "CurveToolBar.h"
 #include "CurveWidget.h"
-#include "spinbox.h"
+
+#include <qsw/spinbox.h>
 
 CurveEditor::CurveEditor(QWidget *parent)
 :
@@ -72,7 +73,7 @@ CurveEditor::CurveEditor(QWidget *parent)
 	connect(tbrMain->buttonSave(), &QToolButton::clicked, this,
 			&CurveEditor::onCurveSave);
 
-	connect(tbrMain->spinBox(), QOverload<int>::of(&SpinBox::valueChanged),
+    connect(tbrMain->spinBox(), QOverload<int>::of(&qsw::SpinBox::valueChanged),
 			this, &CurveEditor::onSpinBoxValueChanged);
 
 	setCurrentIndex(0);

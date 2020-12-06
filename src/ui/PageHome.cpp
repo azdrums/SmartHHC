@@ -157,23 +157,23 @@ QToolButton *PageHome::tbnSetOpen() const
 {
 	return ui->tbnSetOpen;
 }
-SpinBox *PageHome::sbxOpen() const
+qsw::SpinBox *PageHome::sbxOpen() const
 {
 	return ui->sbxOpen;
 }
-SpinBox *PageHome::sbxClosed() const
+qsw::SpinBox *PageHome::sbxClosed() const
 {
 	return ui->sbxClosed;
 }
-SpinBox *PageHome::sbxFixed1() const
+qsw::SpinBox *PageHome::sbxFixed1() const
 {
 	return ui->sbxFixed1;
 }
-SpinBox *PageHome::sbxFixed2() const
+qsw::SpinBox *PageHome::sbxFixed2() const
 {
 	return ui->sbxFixed2;
 }
-SpinBox *PageHome::sbxFixed3() const
+qsw::SpinBox *PageHome::sbxFixed3() const
 {
 	return ui->sbxFixed3;
 }

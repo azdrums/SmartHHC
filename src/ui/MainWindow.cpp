@@ -33,7 +33,9 @@
 #include "PageTerminal.h"
 #include "PageAbout.h"
 
-#include "actionbar.h"
+#include <qsw/actionbar.h>
+#include <qsw/spinbox.h>
+#include <qsw/tablayout.h>
 
 #include "device.h"
 #ifndef Q_OS_ANDROID
@@ -43,8 +45,6 @@
 #endif
 
 #include "settings.h"
-#include "spinbox.h"
-#include "tablayout.h"
 
 MainWindow::MainWindow() : QMainWindow(),
 #ifndef Q_OS_ANDROID
@@ -60,8 +60,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	wgtMain(new QWidget(this)),
 	layout (new QVBoxLayout(wgtMain)),
 	stkMain(new QStackedWidget(wgtMain)),
-	tloMain(new TabLayout(stkMain)),
-	actBar (new ActionBar(this)),
+    tloMain(new qsw::TabLayout(stkMain)),
+    actBar (new qsw::ActionBar(this)),
 	actConn(new QAction(this)),
 	actScan(new QAction(this)),
 	actLoad(new QAction(this)),
@@ -99,13 +99,13 @@ MainWindow::MainWindow() : QMainWindow(),
 
 //  TODO: This doesn't work on Android
 //  actBar->addAction(actConn);
-	actBar->addAction(actConn, Action::Normal);
-	actBar->addAction(actScan, Action::Normal);
-	actBar->addAction(actLoad, Action::Normal);
-	actBar->addAction(actSave, Action::Normal);
-	actBar->addAction(actSvAs, Action::Normal);
-	actBar->addAction(actQuit, Action::Navigation);
-	actBar->addAction(actInfo, Action::OverflowOnly, Action::Other);
+    actBar->addAction(actConn, qsw::Action::Normal);
+    actBar->addAction(actScan, qsw::Action::Normal);
+    actBar->addAction(actLoad, qsw::Action::Normal);
+    actBar->addAction(actSave, qsw::Action::Normal);
+    actBar->addAction(actSvAs, qsw::Action::Normal);
+    actBar->addAction(actQuit, qsw::Action::Navigation);
+    actBar->addAction(actInfo, qsw::Action::OverflowOnly, qsw::Action::Other);
 	actBar->setAppIcon(QIcon(":/icons/hi-hat.png"));
 
 	stkMain->addWidget(tloMain);
@@ -133,13 +133,13 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(actInfo, &QAction::triggered, this, &MainWindow::onAbout);
 	connect(actQuit, &QAction::triggered, QCoreApplication::instance(), &QCoreApplication::quit);
 
-	connect(actBar, &ActionBar::up, this, &MainWindow::onActionBarUp);
+    connect(actBar, &qsw::ActionBar::up, this, &MainWindow::onActionBarUp);
 
-	connect(pageHome->sbxOpen(),	 &SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
-	connect(pageHome->sbxClosed(), &SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
-	connect(pageHome->sbxFixed1(), &SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
-	connect(pageHome->sbxFixed2(), &SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
-	connect(pageHome->sbxFixed3(), &SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
+    connect(pageHome->sbxOpen(),   &qsw::SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
+    connect(pageHome->sbxClosed(), &qsw::SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
+    connect(pageHome->sbxFixed1(), &qsw::SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
+    connect(pageHome->sbxFixed2(), &qsw::SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
+    connect(pageHome->sbxFixed3(), &qsw::SpinBox::valueChanged, this, &MainWindow::onSpinBoxValueChanged);
 
 	connect(pageHome->tbnSetOpen(),   &QToolButton::clicked, this, &MainWindow::onSetOpen);
 	connect(pageHome->tbnSetClosed(), &QToolButton::clicked, this, &MainWindow::onSetClosed);
@@ -735,7 +735,7 @@ void MainWindow::onSpinBoxValueChanged(int value)
 	}
 	bool changed = true;
 
-	SpinBox *spinBox = dynamic_cast<SpinBox *>(sender());
+    qsw::SpinBox *spinBox = dynamic_cast<qsw::SpinBox *>(sender());
 	if (spinBox == pageHome->sbxClosed())
 	{
 		if (value == settings->minPosition())

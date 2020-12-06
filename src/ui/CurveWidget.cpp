@@ -18,6 +18,7 @@
 */
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOption>
 #include <QVector>
 

@@ -39,7 +39,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="TabLayout" name="tblAbout">
+     <widget class="qsw::TabLayout" name="tblAbout">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -143,9 +143,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>TabLayout</class>
+   <class>qsw::TabLayout</class>
    <extends>QTabWidget</extends>
-   <header>tablayout.h</header>
+   <header>qsw/tablayout.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

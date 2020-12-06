@@ -20,8 +20,8 @@
 #ifndef Q_OS_ANDROID
 
 #pragma once
-#include <QSerialPort>
 #include "device.h"
+#include <QtSerialPort/QSerialPort>
 
 #ifdef Q_OS_WIN
 	#pragma warning(disable : 4995)

@@ -70,7 +70,7 @@
        </widget>
       </item>
       <item>
-       <widget class="SpinBox" name="sbxInterval">
+       <widget class="qsw::SpinBox" name="sbxInterval">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -136,7 +136,7 @@
          <x>10</x>
          <y>30</y>
          <width>381</width>
-         <height>230</height>
+         <height>240</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="laySerialPort">
@@ -279,7 +279,7 @@
          <x>10</x>
          <y>30</y>
          <width>381</width>
-         <height>141</height>
+         <height>150</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="layBluetooth">
@@ -408,9 +408,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SpinBox</class>
+   <class>qsw::SpinBox</class>
    <extends>QSpinBox</extends>
-   <header>spinbox.h</header>
+   <header>qsw/spinbox.h</header>
   </customwidget>
  </customwidgets>
  <resources>
