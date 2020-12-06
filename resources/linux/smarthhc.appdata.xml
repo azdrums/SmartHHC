@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+ <id>org.azdrums.smarthhc</id>
+ <metadata_license>FSFAP</metadata_license>
+ <project_license>GPL-2.0+</project_license>
+ <name>smarthhc</name>
+ <summary>Open-Source Digital HiHat Controller</summary>
+ <description>
+  <p>Digital hihat controller for Roland and ATV electronic drum modules.</p>
+ </description>
+ <screenshots>
+  <screenshot type="default">
+   <image>https://azdrums.github.io/smarthhc/screenshot.png</image>
+   <caption>The main window</caption>
+  </screenshot>
+ </screenshots>
+ <launchable type="desktop-id">smarthhc.desktop</launchable>
+ <provides>
+​  <binary>smarthhc</binary>
+​ </provides>
+ <keywords>
+  <keyword>Edrums</keyword>
+  <keyword>Hihat</keyword>
+ </keywords>
+ <url type="homepage">https://azdrums.github.io/smarthhc</url>
+ <project_group>AZDrums</project_group>
+ <developer_name>AZDrums Team</developer_name>
+ <update_contact>azdrums.com@gmail.com</update_contact>
+</component>

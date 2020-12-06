@@ -145,11 +145,11 @@ Controlla le connessioni e riavvia l&apos;applicazione.
     </message>
     <message>
         <source>qrc:/about.html</source>
-				<translation></translation>
+        <translation></translation>
     </message>
     <message>
         <source>qrc:/thanks.html</source>
-				<translation></translation>
+        <translation></translation>
     </message>
     <message>
         <source>qrc:/license.html</source>
