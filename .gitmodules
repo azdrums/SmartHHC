@@ -1,0 +1,3 @@
+[submodule "external/smartwidgets"]
+	path = external/smartwidgets
+	url = https://github.com/azdrums/smartwidgets
